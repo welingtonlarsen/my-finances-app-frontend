@@ -91,7 +91,10 @@ const Dashboard = () => {
 
   return (
       <Box>
-        {showCreateExpenseModal && <CreateExpenseModal open={showCreateExpenseModal} handleClose={() => navigate(-1)}/>}
+        {showCreateExpenseModal && <CreateExpenseModal open={showCreateExpenseModal} handleClose={() =>  {
+          setShowCreateExpenseModal(false)
+          navigate('/dashboard') 
+          }}/>}
         <Grid2 container> 
           <ExpenseList handleAddExpense={() => navigate('/dashboard/despesa')} />
           <Grid2 xs={10}>
