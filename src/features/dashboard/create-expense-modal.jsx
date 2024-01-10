@@ -10,10 +10,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Box } from "@mui/material";
+import { createExpense } from "../../services/expenses-api";
 
 const installments = [
   { id: 1, name: 1 },
@@ -36,6 +37,7 @@ const SelectComponent = ({ control, options, label, name }) => {
     <FormControl variant="standard" sx={{ minWidth: "100px" }}>
       <InputLabel>{label}</InputLabel>
       <Controller
+        rules={{ required: true }}
         name={name}
         control={control}
         render={({ field }) => (
@@ -54,6 +56,7 @@ const SelectComponent = ({ control, options, label, name }) => {
 
 export default function CreateExpenseModal({ open, handleClose }) {
   const data = useLoaderData();
+  const navigate = useNavigate();
 
   if (!data) return;
 
@@ -61,25 +64,28 @@ export default function CreateExpenseModal({ open, handleClose }) {
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, touchedFields, isValid },
   } = useForm({
     defaultValues: {
       amount: undefined,
       categoryId: 1,
       paymentMethodId: 1,
-      installments: 2,
-      currentInstallment: 2,
+      installments: 1,
+      currentInstallment: 1,
       description: "",
     },
   });
 
-  console.log(errors);
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // set loading true
     // post data
     // set loading false
     // redirect to /dashboard
-    console.log(errors);
+    await createExpense({
+      ...data,
+      amount: Number(data.amount),
+    });
+    handleClose();
   };
 
   return (
@@ -160,6 +166,7 @@ export default function CreateExpenseModal({ open, handleClose }) {
               }}
             >
               <Controller
+                rules={{ required: true }}
                 name="amount"
                 control={control}
                 defaultValue=""
@@ -201,7 +208,9 @@ export default function CreateExpenseModal({ open, handleClose }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSubmit(onSubmit)}>Subscribe</Button>
+        <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+          Subscribe
+        </Button>
       </DialogActions>
     </Dialog>
   );
