@@ -19,7 +19,6 @@ export const YEAR_MONTHS = [
 export const CURRENT_MONTH = format(new Date(), "MMMM");
 
 export const getDateFromISOString = (dateISOString) => {
-  console.log("iso: ", dateISOString);
   const date = parseISO(dateISOString);
   const formattedDate = format(date, "dd/MM/yyyy", { locale: ptBR });
   return formattedDate;

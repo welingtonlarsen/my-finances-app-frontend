@@ -54,7 +54,7 @@ const SelectComponent = ({ control, options, label, name }) => {
   );
 };
 
-export default function CreateExpenseModal({ open, handleClose }) {
+export default function CreateExpenseModal({ open, handleClose, handleSave }) {
   const data = useLoaderData();
   const navigate = useNavigate();
 
@@ -85,7 +85,7 @@ export default function CreateExpenseModal({ open, handleClose }) {
       ...data,
       amount: Number(data.amount),
     });
-    handleClose();
+    handleSave();
   };
 
   return (

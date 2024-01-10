@@ -6,10 +6,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { createBrowserRouter } from "react-router-dom";
-import Dashboard, {
-  createExpenseModalLoader,
-  expenseDashboardLoader,
-} from "./features/dashboard";
+import Dashboard, { expenseDashboardLoader } from "./features/dashboard";
 import { RouterProvider } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -22,11 +19,11 @@ export const router = createBrowserRouter([
         element: <Dashboard />,
         loader: expenseDashboardLoader,
       },
-      {
-        path: "/dashboard/despesa",
-        element: <Dashboard />,
-        loader: createExpenseModalLoader,
-      },
+      // {
+      //   path: "/dashboard/despesa",
+      //   element: <Dashboard />,
+      //   loader: expenseDashboardLoader,
+      // },
     ],
   },
 ]);

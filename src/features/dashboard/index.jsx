@@ -20,7 +20,6 @@ import { getPaymentMethods } from "../../services/payment-methods";
 import { getAllExpenses } from "../../services/expenses-api";
 
 const ExpenseList = ({ handleAddExpense, expensesData }) => {
-  console.log("expenses data: ", expensesData);
   return (
     <Grid2 xs={2} sx={{ maxHeight: "100vh", overflowY: "auto" }}>
       <FormControl sx={{ my: "10px", width: "100%" }} size="small">
@@ -74,24 +73,12 @@ const SummaryCards = () => {
 };
 
 const Dashboard = () => {
-  const data = useLoaderData();
-
   const [month, setMonth] = useState(CURRENT_MONTH);
   const [showCreateExpenseModal, setShowCreateExpenseModal] = useState(false);
 
+  const data = useLoaderData();
+
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    setShowCreateExpenseModal(false);
-    const currentPath = location.pathname;
-    if (currentPath.includes("/despesa")) setShowCreateExpenseModal(true);
-    else setShowCreateExpenseModal(false);
-  }, [location]);
-
-  const handleMonthChange = (event) => {
-    setMonth(event.target.value);
-  };
 
   return (
     <Box>
@@ -100,13 +87,16 @@ const Dashboard = () => {
           open={showCreateExpenseModal}
           handleClose={() => {
             setShowCreateExpenseModal(false);
+          }}
+          handleSave={() => {
             navigate("/dashboard");
+            setShowCreateExpenseModal(false);
           }}
         />
       )}
       <Grid2 container>
         <ExpenseList
-          handleAddExpense={() => navigate("/dashboard/despesa")}
+          handleAddExpense={() => setShowCreateExpenseModal(true)}
           expensesData={data.allExpenses}
         />
         <Grid2 xs={10}>
@@ -119,7 +109,7 @@ const Dashboard = () => {
                   id="demo-select-small"
                   value={month}
                   label="Age"
-                  onChange={handleMonthChange}
+                  onChange={(event) => setMonth(event.target.value)}
                 >
                   {YEAR_MONTHS.map((month) => (
                     <MenuItem key={month} value={month}>
@@ -140,14 +130,6 @@ const Dashboard = () => {
 export default Dashboard;
 
 export async function expenseDashboardLoader() {
-  const allExpenses = await getAllExpenses();
-
-  return {
-    allExpenses: allExpenses.expenses,
-  };
-}
-
-export async function createExpenseModalLoader() {
   const categories = await getCategories();
   const paymentMethods = await getPaymentMethods();
   const allExpenses = await getAllExpenses();
