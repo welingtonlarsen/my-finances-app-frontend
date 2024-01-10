@@ -125,7 +125,7 @@ export default function CreateExpenseModal({ open, handleClose }) {
               }}
             >
               <Controller
-                rules={{ required: "Descrição é obrigatório", minLength: 5 }}
+                rules={{ required: "Descrição é obrigatório", minLength: 3 }}
                 name="description"
                 control={control}
                 defaultValue=""

@@ -12,13 +12,15 @@ import {
 } from "@mui/material";
 import { SummaryCard } from "./sumary-card";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { CURRENT_MONTH, YEAR_MONTHS } from "../../utils/month";
+import { CURRENT_MONTH, YEAR_MONTHS } from "../../utils/date";
 import CreateExpenseModal from "./create-expense-modal";
 import { useLocation, useNavigate, useLoaderData } from "react-router-dom";
 import { getCategories } from "../../services/categories-api";
 import { getPaymentMethods } from "../../services/payment-methods";
+import { getAllExpenses } from "../../services/expenses-api";
 
-const ExpenseList = ({ handleAddExpense }) => {
+const ExpenseList = ({ handleAddExpense, expensesData }) => {
+  console.log("expenses data: ", expensesData);
   return (
     <Grid2 xs={2} sx={{ maxHeight: "100vh", overflowY: "auto" }}>
       <FormControl sx={{ my: "10px", width: "100%" }} size="small">
@@ -32,116 +34,22 @@ const ExpenseList = ({ handleAddExpense }) => {
           Incluir
         </Button>
       </FormControl>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="PIX"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de débito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="PIX"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
-      <Box sx={{ mb: "10px" }}>
-        <ExpenseCard
-          amount={200.79}
-          description="Jonnis"
-          paymentMethod="Cartão de crédito"
-          category="Alimentação"
-          installments={1}
-          currentInstallment={1}
-        />
-      </Box>
+      {expensesData &&
+        expensesData.map((expense) => {
+          return (
+            <Box key={expense.id} sx={{ mb: "10px" }}>
+              <ExpenseCard
+                amount={expense.amount}
+                description={expense.description}
+                paymentMethod={expense.paymentMethod.name}
+                category={expense.category.name}
+                installments={expense.installments}
+                currentInstallment={expense.currentInstallment}
+                date={expense.date}
+              />
+            </Box>
+          );
+        })}
     </Grid2>
   );
 };
@@ -166,6 +74,8 @@ const SummaryCards = () => {
 };
 
 const Dashboard = () => {
+  const data = useLoaderData();
+
   const [month, setMonth] = useState(CURRENT_MONTH);
   const [showCreateExpenseModal, setShowCreateExpenseModal] = useState(false);
 
@@ -195,7 +105,10 @@ const Dashboard = () => {
         />
       )}
       <Grid2 container>
-        <ExpenseList handleAddExpense={() => navigate("/dashboard/despesa")} />
+        <ExpenseList
+          handleAddExpense={() => navigate("/dashboard/despesa")}
+          expensesData={data.allExpenses}
+        />
         <Grid2 xs={10}>
           <Grid2 container>
             <Grid2 xs={12}>
@@ -226,11 +139,22 @@ const Dashboard = () => {
 
 export default Dashboard;
 
+export async function expenseDashboardLoader() {
+  const allExpenses = await getAllExpenses();
+
+  return {
+    allExpenses: allExpenses.expenses,
+  };
+}
+
 export async function createExpenseModalLoader() {
   const categories = await getCategories();
   const paymentMethods = await getPaymentMethods();
+  const allExpenses = await getAllExpenses();
+
   return {
     categories,
     paymentMethods,
+    allExpenses: allExpenses.expenses,
   };
 }
