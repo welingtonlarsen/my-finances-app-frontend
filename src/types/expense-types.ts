@@ -21,3 +21,9 @@ export type Expense = {
   currentInstallment: number;
   paymentMethod?: PaymentMethod;
 };
+
+export type ExpenseSum = {
+  sum: number;
+  paymentMethodName: string;
+  paymentMethodId: number;
+};

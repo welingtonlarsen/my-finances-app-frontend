@@ -1,30 +1,37 @@
 import { RootState } from '@/app/store';
-import { Category, Expense, PaymentMethod } from '@/types/expense-types';
+import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export const fetchCategories = createAsyncThunk('dashboard/fetchCategories', async () => {
-  const response = await axios.get<Category[]>('http://localhost:3000/category');
+  const response = await axios.get<Category[]>(`${BASE_URL}/category`);
   return response;
 });
 
 export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMethods', async () => {
-  const response = await axios.get<PaymentMethod[]>('http://localhost:3000/paymentmethod');
+  const response = await axios.get<PaymentMethod[]>(`${BASE_URL}/paymentmethod`);
   return response;
 });
 
 export const fetchExpenses = createAsyncThunk(
   'dashboard/fetchExpenses',
   async ({ page, size }: { page: number; size: number }) => {
-    const response = await axios.get<{ expenses: Expense[]; totalAmount: number }>('http://localhost:3000/expense', {
+    const response = await axios.get<{ expenses: Expense[]; totalAmount: number }>(`${BASE_URL}/expense`, {
       params: { page, size },
     });
     return response;
   },
 );
 
+export const fetchExpensesSum = createAsyncThunk('dashboard/fetchExpensesSum', async () => {
+  const response = await axios.get<ExpenseSum[]>(`${BASE_URL}/expenses/sum`);
+  return response;
+});
+
 export const saveExpense = createAsyncThunk('dashboard/saveExpense', async (expense: Expense, { dispatch }) => {
-  const response = await axios.post<Expense>('http://localhost:3000/expense', expense);
+  const response = await axios.post<Expense>(`${BASE_URL}/expense`, expense);
   await dispatch(fetchExpenses({ page: 1, size: 4 })).unwrap();
   return response;
 });
@@ -48,6 +55,11 @@ type TState = {
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   };
+  expensesSum: {
+    data: ExpenseSum[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+  };
 };
 
 const initialState: TState = {
@@ -66,6 +78,11 @@ const initialState: TState = {
       expenses: [],
       totalAmount: null,
     },
+    status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    error: null,
+  },
+  expensesSum: {
+    data: [],
     status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
@@ -115,6 +132,14 @@ const dashboardSlice = createSlice({
       state.expenses.data = action.payload.data;
       state.expenses.status = 'succeeded';
     });
+    // fetchExpensesSum
+    builder.addCase(fetchExpensesSum.pending, (state) => {
+      state.expensesSum.status = 'loading';
+    });
+    builder.addCase(fetchExpensesSum.fulfilled, (state, action) => {
+      state.expensesSum.data = action.payload.data;
+      state.expensesSum.status = 'succeeded';
+    });
   },
 });
 
@@ -137,6 +162,13 @@ export const getExpenses = (state: RootState) => {
     expenses: state.dashboard.expenses.data.expenses,
     totalAmount: state.dashboard.expenses.data.totalAmount,
     isLoading: state.dashboard.expenses.status === 'loading',
+  };
+};
+
+export const getExpensesSum = (state: RootState) => {
+  return {
+    expensesSum: state.dashboard.expensesSum.data,
+    isLoading: state.dashboard.expensesSum.status === 'loading',
   };
 };
 
