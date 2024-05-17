@@ -49,7 +49,7 @@ export default function useNewExpenseForm({ closeDialog }: { closeDialog: () => 
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log({ data });
-    await dispatch(saveExpense(data)).unwrap();
+    await dispatch(saveExpense(data as any)).unwrap();
     closeDialog();
     form.reset({ ...defaultValues });
     toast({
