@@ -80,7 +80,7 @@ export function NewExpenseDialog() {
           <Plus className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-screen">
+      <DialogContent className="lg:max-w-screen-lg w-96">
         <DialogHeader>
           <DialogTitle>New expense</DialogTitle>
           <DialogDescription>Include a new expense to your list.</DialogDescription>
