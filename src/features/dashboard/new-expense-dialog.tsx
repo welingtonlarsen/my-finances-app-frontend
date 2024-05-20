@@ -80,7 +80,7 @@ export function NewExpenseDialog() {
           <Plus className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-auto py-10 sm:py-0">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-auto py-10">
         {/* Fixed header
         <div className="sticky top-0 bg-white dark:bg-gray-950 z-10 px-4 py-3 border-b border-gray-200 dark:border-gray-800 w-full bg-red-800">
           <div className="flex items-center justify-between">
