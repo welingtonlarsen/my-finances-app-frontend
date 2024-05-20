@@ -130,15 +130,15 @@ export function NewExpenseDialog() {
                   ))}
                 </SelectFormField>
               </div>
+              <DialogFooter>
+                <Button type="submit" disabled={isExpensesLoading || !isValid}>
+                  {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isExpensesLoading ? 'Saving...' : 'Save changes'}
+                </Button>
+              </DialogFooter>
             </form>
           </Form>
         </div>
-        <DialogFooter>
-          <Button type="submit" disabled={isExpensesLoading || !isValid}>
-            {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isExpensesLoading ? 'Saving...' : 'Save changes'}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
