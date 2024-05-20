@@ -36,6 +36,11 @@ export const saveExpense = createAsyncThunk('dashboard/saveExpense', async (expe
   return response;
 });
 
+export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch }) => {
+  await axios.delete(`${BASE_URL}/expenses/${id}`);
+  dispatch(fetchExpenses({ page: 1, size: 8 }));
+});
+
 type TState = {
   categories: {
     data: Category[];
@@ -53,6 +58,7 @@ type TState = {
       totalAmount: number | null;
     };
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    deletingStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   };
   expensesSum: {
@@ -79,6 +85,7 @@ const initialState: TState = {
       totalAmount: null,
     },
     status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    deletingStatus: 'idle',
     error: null,
   },
   expensesSum: {
@@ -132,6 +139,16 @@ const dashboardSlice = createSlice({
       state.expenses.data = action.payload.data;
       state.expenses.status = 'succeeded';
     });
+    // deleteExpense
+    builder.addCase(deleteExpense.pending, (state) => {
+      state.expenses.deletingStatus = 'loading';
+    });
+    builder.addCase(deleteExpense.rejected, (state, action) => {
+      state.expenses.deletingStatus = 'failed';
+    });
+    builder.addCase(deleteExpense.fulfilled, (state, action) => {
+      state.expenses.deletingStatus = 'succeeded';
+    });
     // fetchExpensesSum
     builder.addCase(fetchExpensesSum.pending, (state) => {
       state.expensesSum.status = 'loading';
@@ -162,6 +179,7 @@ export const getExpenses = (state: RootState) => {
     expenses: state.dashboard.expenses.data.expenses,
     totalAmount: state.dashboard.expenses.data.totalAmount,
     isLoading: state.dashboard.expenses.status === 'loading',
+    isDeleting: state.dashboard.expenses.deletingStatus === 'loading',
   };
 };
 
