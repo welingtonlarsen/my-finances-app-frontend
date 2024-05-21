@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { truncateString } from '@/lib/string-utils';
+import { isMobile } from 'react-device-detect';
 
 const pageSize = 8;
 const initialPagination = { page: 1, size: pageSize };
@@ -65,8 +67,11 @@ export default function ExpensesSummary() {
                 <AvatarFallback>EX</AvatarFallback>
               </Avatar>
               <div>
-                <div className="flex">
-                  <p className="text-sm font-medium leading-none">{expense.description}</p>
+                <div className="flex items-center">
+                  <p className="text-sm font-medium leading-none">
+                    {isMobile ? truncateString(expense.description, 10) : expense.description}
+                  </p>
+                  &nbsp;
                   <p className="text-xs text-muted-foreground">({formatDateToYearMonthDay(expense.date)})</p>
                 </div>
                 <p className="text-sm text-muted-foreground">{expense.paymentMethod?.name}</p>
@@ -81,7 +86,6 @@ export default function ExpensesSummary() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleDeleteExpense(expense.id)}>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
