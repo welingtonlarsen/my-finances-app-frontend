@@ -3,10 +3,15 @@ import ExpensesSummary from '@/features/dashboard/expenses-summary';
 import ExpensesTotalCardSecondary from '@/features/dashboard/expenses-total-card-secondary.tsx';
 import ExpensesChart from '@/features/dashboard/expenses-chart.tsx';
 import ExpensesTotalCards from '@/features/dashboard/expenses-total-cards';
+import { DateRangePicker } from '@/components/raw/date-range-picker';
 
 export default function DashboardPage() {
   return (
-    <Layout title="Dashboard">
+    <Layout>
+      <div className="flex justify-between">
+        <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
+        {/* <DateRangePicker /> */}
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2 flex flex-col gap-4 xl:flex-row xl:gap-8">
           <ExpensesTotalCards />
