@@ -2,6 +2,7 @@ import { RootState } from '@/app/store';
 import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { initialPagination } from './constants/constants';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -32,13 +33,14 @@ export const fetchExpensesSum = createAsyncThunk('dashboard/fetchExpensesSum', a
 
 export const saveExpense = createAsyncThunk('dashboard/saveExpense', async (expense: Expense, { dispatch }) => {
   const response = await axios.post<Expense>(`${BASE_URL}/expense`, expense);
-  await dispatch(fetchExpenses({ page: 1, size: 4 })).unwrap();
+  await dispatch(fetchExpenses(initialPagination)).unwrap();
+  dispatch(fetchExpensesSum());
   return response;
 });
 
 export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch }) => {
   await axios.delete(`${BASE_URL}/expenses/${id}`);
-  dispatch(fetchExpenses({ page: 1, size: 8 }));
+  dispatch(fetchExpenses(initialPagination));
 });
 
 type TState = {

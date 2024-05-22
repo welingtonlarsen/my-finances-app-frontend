@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/store';
 import { saveExpense } from './dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
-import { Expense } from '@/types/expense-types';
 
 const FormSchema = z.object({
   amount: z
@@ -14,7 +13,9 @@ const FormSchema = z.object({
   description: z
     .string({ required_error: 'Description should be informed.' })
     .min(1, { message: 'Description should be informed.' }),
-  date: z.string({ required_error: 'Date must be selected.' }).min(2, { message: 'Date must be selected.' }),
+  date: z.date({
+    required_error: 'Date must be selected.',
+  }),
   installments: z
     .number({ required_error: 'Installments should be selected.' })
     .min(1, { message: 'Installments should be selected.' }),
@@ -32,11 +33,11 @@ const FormSchema = z.object({
 const defaultValues = {
   amount: undefined,
   description: '',
-  date: '',
-  installments: 0,
-  currentInstallment: 0,
-  paymentMethodId: 0,
-  categoryId: 0,
+  date: new Date(),
+  installments: 1,
+  currentInstallment: 1,
+  paymentMethodId: 1,
+  categoryId: 1,
 };
 
 export default function useNewExpenseForm({ closeDialog }: { closeDialog: () => void }) {
@@ -48,7 +49,6 @@ export default function useNewExpenseForm({ closeDialog }: { closeDialog: () => 
   const dispatch = useAppDispatch();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log({ data });
     await dispatch(saveExpense(data as any)).unwrap();
     closeDialog();
     form.reset({ ...defaultValues });

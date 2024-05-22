@@ -2,5 +2,10 @@ import { format } from 'date-fns';
 
 export function formatDateToYearMonthDay(dateString: string) {
   const date = new Date(dateString);
-  return format(date, 'yyyy/MM/dd');
+  return `${date.getFullYear()}/${date.getUTCMonth()}/${date.getUTCDate()}`;
+}
+
+export function getTodayString() {
+  const today = new Date();
+  return format(today, 'yyyy-MM-dd');
 }

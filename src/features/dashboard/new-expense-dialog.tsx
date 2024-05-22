@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Loader2, Plus } from 'lucide-react';
-import { Form } from '@/components/ui/form.tsx';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form.tsx';
 import useNewExpenseForm from '@/features/dashboard/useNewExpenseForm.ts';
 import { InputFormField } from '@/components/input/input-form-field.tsx';
 import SelectFormField from '@/components/input/select-form-field.tsx';
@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '@/app/store';
 import { useEffect, useState } from 'react';
 import { getSVGOfPaymentMethod } from '@/lib/payment-utils';
 import { Category, PaymentMethod } from '@/types/expense-types';
+import { DatePickerForm } from '@/components/input/date-picker';
 
 function PaymentMethodSelectFormField({ paymentMethod }: { paymentMethod: PaymentMethod }) {
   return (
@@ -68,10 +69,6 @@ export function NewExpenseDialog() {
     dispatch(fetchPaymentMethods());
   }, []);
 
-  if (isCategoriesLoading || isPaymentMethodsLoading) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -104,7 +101,7 @@ export function NewExpenseDialog() {
               <div className="grid gap-4 py-4 px-1">
                 <InputFormField form={form} name="amount" label="Amount" type="number" />
                 <InputFormField form={form} name="description" label="Description" type="text" />
-                <InputFormField form={form} name="date" label="Date" type="date" />
+                <DatePickerForm form={form} name="date" label="Date" />
                 <SelectFormField form={form} name="installments" label="Installments" type="number">
                   {installments.map((installment) => (
                     <SelectItem key={installment} value={String(installment)}>

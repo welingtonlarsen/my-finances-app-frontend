@@ -40,6 +40,9 @@ export function InputFormField<T extends FieldValues>({ form, name, label, type 
           onChange={(event) => handleOnChangeNumberInput(event, field)}
         />
       );
+
+    if (type === 'date') return <Input type={type} {...field} className="min-w-80 appearance-none left-0" />;
+
     return <Input type={type} {...field} />;
   }, []);
 
