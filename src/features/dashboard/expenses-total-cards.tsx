@@ -25,7 +25,10 @@ export default function ExpensesTotalCards() {
           <ExpensesTotalCard total={sum} title={paymentMethodName} />
         </div>
       ))}
-      <div className="col-span-2 flex justify-center sm:justify-start items-center lg:col-span-1">
+      <div className="col-span-2 grid grid-cols-2 sm:col-span-4 gap-2 lg:hidden">
+        <SecondaryExpensesTotalCards />
+      </div>
+      <div className="col-span-2 sm:col-span-1 flex justify-center sm:justify-start items-center lg:col-span-1">
         <NewPaymentMethodDialog disabled={mainExpensesSum.length === 4} />
       </div>
     </div>
