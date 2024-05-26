@@ -4,10 +4,12 @@ export type Category = {
   colorHexCode: string;
 };
 
+export type PaymentType = 'PIX' | 'CREDIT_CARD' | 'CASH' | 'TED' | 'DEBIT_CARD';
+
 export type PaymentMethod = {
   id?: number;
   name: string;
-  paymentType: 'PIX' | 'CARD' | 'CASH';
+  paymentType: PaymentType;
 };
 
 export type Expense = {

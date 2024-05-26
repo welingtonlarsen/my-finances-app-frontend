@@ -8,18 +8,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Loader2, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Form } from '@/components/ui/form.tsx';
-import useNewExpenseForm from '@/features/dashboard/useNewExpenseForm.ts';
 import { InputFormField } from '@/components/input/input-form-field.tsx';
 import SelectFormField from '@/components/input/select-form-field.tsx';
 import { SelectItem } from '@/components/ui/select.tsx';
-import { fetchCategories, fetchPaymentMethods, getCategories, getExpenses, getPaymentMethods } from './dashboard-slice';
-import { useAppDispatch, useAppSelector } from '@/app/store';
-import { useEffect, useState } from 'react';
+import { useAppDispatch } from '@/app/store';
+import { useState } from 'react';
 import { getSVGOfPaymentMethod } from '@/lib/payment-utils';
-import { Category, PaymentMethod } from '@/types/expense-types';
+import { PaymentMethod, PaymentType } from '@/types/expense-types';
 import useNewPaymentMethodForm from './useNewPaymentMethodForm';
+import { Tooltip } from '@/components/tooltip/tooltip.tsx';
 
 function PaymentMethodSelectFormField({ paymentMethod }: { paymentMethod: PaymentMethod }) {
   return (
@@ -42,12 +41,19 @@ function PaymentMethodSelectFormField({ paymentMethod }: { paymentMethod: Paymen
   );
 }
 
-const paymentsTypes = [
-  { title: 'Credit Card', paymentType: 'CREDIT_CART' },
+const paymentsTypes: { title: string; paymentType: PaymentType }[] = [
+  { title: 'Credit Card', paymentType: 'CREDIT_CARD' },
   { title: 'PIX', paymentType: 'PIX' },
+  { title: 'Cash', paymentType: 'CASH' },
+  { title: 'TED', paymentType: 'TED' },
+  { title: 'Debit Card', paymentType: 'DEBIT_CARD' },
 ];
 
-export function NewPaymentMethodDialog() {
+type TProps = {
+  disabled?: boolean;
+};
+
+export function NewPaymentMethodDialog({ disabled }: TProps) {
   const [open, setOpen] = useState(false);
   const { form, onSubmit, isValid } = useNewPaymentMethodForm({ closeDialog: () => setOpen(false) });
   const dispatch = useAppDispatch();
@@ -55,9 +61,20 @@ export function NewPaymentMethodDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="ml-2 rounded-full h-8 w-8">
-          <Plus className="h-4 w-4" />
-        </Button>
+        <>
+          {disabled && (
+            <Tooltip tip="Maximum number of methods reached.">
+              <div className="ml-2 rounded-full h-8 w-8 border border-gray-200 flex items-center justify-center">
+                <Plus className="h-4 w-4 text-black" />
+              </div>
+            </Tooltip>
+          )}
+          {!disabled && (
+            <Button variant="outline" size="icon" className="ml-2 rounded-full h-8 w-8">
+              <Plus className="h-4 w-4" />
+            </Button>
+          )}
+        </>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-auto py-10">
         <DialogHeader className="px-6">

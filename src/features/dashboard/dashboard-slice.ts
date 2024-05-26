@@ -16,6 +16,15 @@ export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMetho
   return response;
 });
 
+export const savePaymentMethod = createAsyncThunk(
+  'dashboard/savePaymentMethod',
+  async (paymentMethod: PaymentMethod, { dispatch }) => {
+    const response = await axios.post<PaymentMethod>(`${BASE_URL}/paymentmethod`, paymentMethod);
+    dispatch(fetchPaymentMethods());
+    return response;
+  },
+);
+
 export const fetchExpenses = createAsyncThunk(
   'dashboard/fetchExpenses',
   async ({ page, size }: { page: number; size: number }) => {
@@ -52,6 +61,7 @@ type TState = {
   paymentMethods: {
     data: PaymentMethod[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    saveStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   };
   expenses: {
@@ -79,6 +89,7 @@ const initialState: TState = {
   paymentMethods: {
     data: [],
     status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    saveStatus: 'idle',
     error: null,
   },
   expenses: {
@@ -125,6 +136,13 @@ const dashboardSlice = createSlice({
     builder.addCase(fetchPaymentMethods.rejected, (state, action) => {
       state.paymentMethods.status = 'failed';
       state.paymentMethods.error = action.error.message || 'Something went wrong';
+    });
+    // savePaymentMethod
+    builder.addCase(savePaymentMethod.pending, (state) => {
+      state.paymentMethods.saveStatus = 'loading';
+    });
+    builder.addCase(savePaymentMethod.fulfilled, (state) => {
+      state.paymentMethods.saveStatus = 'succeeded';
     });
     // saveExpense
     builder.addCase(saveExpense.pending, (state) => {

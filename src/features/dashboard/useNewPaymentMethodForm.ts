@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/store';
-import { saveExpense } from './dashboard-slice';
+import { savePaymentMethod } from './dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({
@@ -27,11 +27,11 @@ export default function useNewPaymentMethodForm({ closeDialog }: { closeDialog: 
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log({ data });
-    // await dispatch(saveExpense(data as any)).unwrap();
+    await dispatch(savePaymentMethod(data as any)).unwrap();
     closeDialog();
     form.reset({ ...defaultValues });
     toast({
-      description: 'Expense saved successfully.',
+      description: 'New payment method created successfully.',
     });
   }
 
