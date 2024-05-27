@@ -70,7 +70,7 @@ export function NewPaymentMethodDialog({ disabled }: TProps) {
             </Tooltip>
           )}
           {!disabled && (
-            <Button variant="outline" size="icon" className="ml-2 rounded-full h-8 w-8">
+            <Button variant="outline" size="icon" className="ml-2 rounded-full h-8 w-8" onClick={() => setOpen(true)}>
               <Plus className="h-4 w-4" />
             </Button>
           )}

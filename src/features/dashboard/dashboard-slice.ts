@@ -16,6 +16,16 @@ export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMetho
   return response;
 });
 
+export const deletePaymentMethod = createAsyncThunk(
+  'dashboard/deletePaymentMethod',
+  async (id: number, { dispatch }) => {
+    await axios.delete(`${BASE_URL}/paymentmethod/${id}`);
+    dispatch(fetchPaymentMethods());
+    dispatch(fetchExpenses(initialPagination));
+    dispatch(fetchExpensesSum());
+  },
+);
+
 export const savePaymentMethod = createAsyncThunk(
   'dashboard/savePaymentMethod',
   async (paymentMethod: PaymentMethod, { dispatch }) => {
@@ -62,6 +72,7 @@ type TState = {
     data: PaymentMethod[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     saveStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+    deleteStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   };
   expenses: {
@@ -90,6 +101,7 @@ const initialState: TState = {
     data: [],
     status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
     saveStatus: 'idle',
+    deleteStatus: 'idle',
     error: null,
   },
   expenses: {
@@ -136,6 +148,13 @@ const dashboardSlice = createSlice({
     builder.addCase(fetchPaymentMethods.rejected, (state, action) => {
       state.paymentMethods.status = 'failed';
       state.paymentMethods.error = action.error.message || 'Something went wrong';
+    });
+    // deletePaymentMethod
+    builder.addCase(deletePaymentMethod.pending, (state) => {
+      state.paymentMethods.deleteStatus = 'loading';
+    });
+    builder.addCase(deletePaymentMethod.fulfilled, (state) => {
+      state.paymentMethods.deleteStatus = 'succeeded';
     });
     // savePaymentMethod
     builder.addCase(savePaymentMethod.pending, (state) => {
@@ -191,6 +210,7 @@ export const getPaymentMethods = (state: RootState) => {
   return {
     paymentMethods: state.dashboard.paymentMethods.data,
     isLoading: state.dashboard.paymentMethods.status === 'loading',
+    isDeleting: state.dashboard.paymentMethods.deleteStatus === 'loading',
   };
 };
 
