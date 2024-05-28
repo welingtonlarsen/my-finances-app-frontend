@@ -5,8 +5,14 @@ import ExpensesChart from '@/features/dashboard/expenses-chart.tsx';
 import ExpensesTotalCards from '@/features/dashboard/expenses-total-cards';
 import { DateRangePicker } from '@/components/raw/date-range-picker';
 import SecondaryExpensesTotalCards from '@/features/dashboard/SecondaryExpensesTotalCards.tsx';
+import { useAppSelector } from '@/app/store.ts';
+import { getExpensesSum } from '@/features/dashboard/dashboard-slice.ts';
 
 export default function DashboardPage() {
+  // TODO: Remove selector logic from here because it's only a page!
+  const { expensesSum } = useAppSelector(getExpensesSum);
+  const secondaryExpensesSum = expensesSum.length > 3 ? [...expensesSum].splice(4, 4) : [];
+
   return (
     <Layout>
       <div className="flex justify-between">
@@ -17,14 +23,13 @@ export default function DashboardPage() {
         <div className="col-span-2 gap-4 xl:gap-8">
           <ExpensesTotalCards />
         </div>
-        <div className="hidden lg:grid xl:hidden grid col-span-2 grid-cols-3 gap-2">
-          <div className="col-span-2">
-            <ExpensesChart />
+        {secondaryExpensesSum.length > 0 && (
+          <div className="hidden lg:grid xl:hidden grid col-span-2 grid-cols-3 gap-2">
+            <div className="col-span-1 grid grid-cols-2 h-14 gap-1">
+              <SecondaryExpensesTotalCards />
+            </div>
           </div>
-          <div className="col-span-1 grid grid-cols-2 h-14 gap-1">
-            <SecondaryExpensesTotalCards />
-          </div>
-        </div>
+        )}
         <div className="col-span-2 xl:col-span-1 xl:mt-3">
           <ExpensesSummary />
         </div>
