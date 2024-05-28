@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/store';
 import { saveExpense } from './dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
+import { useEffect, useMemo, useRef } from 'react';
 
 const FormSchema = z.object({
   amount: z
@@ -40,13 +41,29 @@ const defaultValues = {
   categoryId: 1,
 };
 
-export default function useNewExpenseForm({ closeDialog }: { closeDialog: () => void }) {
+export default function useNewExpenseForm({
+  closeDialog,
+  loadedDefaultValues,
+}: {
+  closeDialog: () => void;
+  loadedDefaultValues?: Partial<z.infer<typeof FormSchema>>;
+}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues,
+    defaultValues: { ...defaultValues, ...loadedDefaultValues },
   });
   const { toast } = useToast();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log('render');
+    if (loadedDefaultValues.paymentMethodId) {
+      form.setValue('paymentMethodId', loadedDefaultValues.paymentMethodId);
+    }
+    if (loadedDefaultValues.categoryId) {
+      form.setValue('categoryId', loadedDefaultValues.categoryId);
+    }
+  }, [loadedDefaultValues]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     await dispatch(saveExpense(data as any)).unwrap();

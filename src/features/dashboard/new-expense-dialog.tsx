@@ -16,7 +16,7 @@ import SelectFormField from '@/components/input/select-form-field.tsx';
 import { SelectItem } from '@/components/ui/select.tsx';
 import { fetchCategories, fetchPaymentMethods, getCategories, getExpenses, getPaymentMethods } from './dashboard-slice';
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getSVGOfPaymentMethod } from '@/lib/payment-utils';
 import { Category, PaymentMethod } from '@/types/expense-types';
 import { DatePickerForm } from '@/components/input/date-picker';
@@ -57,12 +57,16 @@ const installments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export function NewExpenseDialog() {
   const [open, setOpen] = useState(false);
-  const { form, onSubmit, isValid } = useNewExpenseForm({ closeDialog: () => setOpen(false) });
   const dispatch = useAppDispatch();
 
   const { categories, isLoading: isCategoriesLoading } = useAppSelector(getCategories);
   const { paymentMethods, isLoading: isPaymentMethodsLoading } = useAppSelector(getPaymentMethods);
   const { isLoading: isExpensesLoading } = useAppSelector(getExpenses);
+
+  const { form, onSubmit, isValid } = useNewExpenseForm({
+    closeDialog: () => setOpen(false),
+    loadedDefaultValues: { paymentMethodId: paymentMethods[0]?.id, categoryId: categories[0]?.id },
+  });
 
   useEffect(() => {
     dispatch(fetchCategories());
