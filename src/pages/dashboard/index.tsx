@@ -14,7 +14,7 @@ export default function DashboardPage() {
   const secondaryExpensesSum = expensesSum.length > 3 ? [...expensesSum].splice(4, 4) : [];
 
   return (
-    <Layout>
+    <>
       <div className="flex justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
         {/* <DateRangePicker /> */}
@@ -42,6 +42,6 @@ export default function DashboardPage() {
           <ExpensesChart />
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

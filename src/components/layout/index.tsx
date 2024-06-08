@@ -14,12 +14,12 @@ import {
 import { Input } from '@/components/ui/input.tsx';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet.tsx';
 import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 
 type TLayout = {
   title?: string;
-  children: ReactNode;
 };
-export function Layout({ title, children }: TLayout) {
+export function Layout({ title }: TLayout) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       {/* Side nav for desktop */}
@@ -166,12 +166,7 @@ export function Layout({ title, children }: TLayout) {
 
         {/* Content */}
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 max-w-screen-2xl">
-          {!!title && (
-            <div className="flex items-center">
-              <h1 className="text-lg font-semibold md:text-2xl">{title}</h1>
-            </div>
-          )}
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
