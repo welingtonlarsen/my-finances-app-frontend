@@ -1,10 +1,13 @@
-import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from '@/components/ui/card';
-import { AlertTitle, AlertDescription, Alert } from '@/components/ui/alert';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from '@/components/ui/card.tsx';
+import { AlertTitle, AlertDescription, Alert } from '@/components/ui/alert.tsx';
+import { Label } from '@/components/ui/label.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { authenticate } from '@/features/auth/slice/auth-thunks.ts';
+import { Credentials } from '@/features/auth/types/auth-types.ts';
+import { useAppDispatch, useAppSelector } from '@/app/store.ts';
+import { getError, isLoading } from '../slice/auth-selectors';
 // import { authUser } from "@/app/authSlice"
 // import globalRouter from "@/config/globalRouter"
 
@@ -50,15 +53,18 @@ export function EyeIcon(props) {
 }
 
 export default function SignIn() {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState<Credentials>({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
-  const dispatch = useDispatch();
+  const isAuthenticating = useAppSelector(isLoading);
+  const { errorMessage } = useAppSelector(getError);
+
+  const dispatch = useAppDispatch();
   // const { errorMessage } = useSelector((state) => state.auth);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // dispatch(authUser(credentials));
+    dispatch(authenticate(credentials));
   };
 
   return (
@@ -70,13 +76,13 @@ export default function SignIn() {
             <CardDescription>Enter your credentials below to login to your account.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* {!!errorMessage && (
-              <Alert className="bg-red-50 dark:bg-red-900 border-red-500 dark:border-red-200" variant="error">
+            {!!errorMessage && (
+              <Alert className="bg-red-50 dark:bg-red-900 border-red-500 dark:border-red-200" variant="destructive">
                 <AlertTriangleIcon className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
+                <AlertTitle>Authentication error</AlertTitle>
                 <AlertDescription>{errorMessage}</AlertDescription>
               </Alert>
-            )} */}
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -109,7 +115,7 @@ export default function SignIn() {
                 </Button>
               </div>
             </div>
-            <Button className="w-full" type="submit">
+            <Button className="w-full" type="submit" disabled={isAuthenticating}>
               Login
             </Button>
           </CardContent>

@@ -1,4 +1,4 @@
-import SignIn from '@/features/signin/signin';
+import SignIn from '@/features/auth/components/signin.tsx';
 
 const SignInPage = () => {
   return (
