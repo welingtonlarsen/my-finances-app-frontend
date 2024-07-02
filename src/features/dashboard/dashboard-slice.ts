@@ -3,16 +3,17 @@ import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-ty
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { initialPagination } from './constants/constants';
+import { AxiosInstance } from '@/app/axios-instance';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const fetchCategories = createAsyncThunk('dashboard/fetchCategories', async () => {
-  const response = await axios.get<Category[]>(`${BASE_URL}/category`);
+  const response = await AxiosInstance.Authenticated.get<Category[]>('/category');
   return response;
 });
 
 export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMethods', async () => {
-  const response = await axios.get<PaymentMethod[]>(`${BASE_URL}/paymentmethod`);
+  const response = await AxiosInstance.Authenticated.get<PaymentMethod[]>('/paymentmethod');
   return response;
 });
 
@@ -38,7 +39,7 @@ export const savePaymentMethod = createAsyncThunk(
 export const fetchExpenses = createAsyncThunk(
   'dashboard/fetchExpenses',
   async ({ page, size }: { page: number; size: number }) => {
-    const response = await axios.get<{ expenses: Expense[]; totalAmount: number }>(`${BASE_URL}/expense`, {
+    const response = await AxiosInstance.Authenticated.get<{ expenses: Expense[]; totalAmount: number }>('/expense', {
       params: { page, size },
     });
     return response;
@@ -46,7 +47,7 @@ export const fetchExpenses = createAsyncThunk(
 );
 
 export const fetchExpensesSum = createAsyncThunk('dashboard/fetchExpensesSum', async () => {
-  const response = await axios.get<ExpenseSum[]>(`${BASE_URL}/expenses/sum`);
+  const response = await AxiosInstance.Authenticated.get<ExpenseSum[]>('/expenses/sum');
   return response;
 });
 
