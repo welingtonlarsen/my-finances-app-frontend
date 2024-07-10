@@ -10,11 +10,22 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-export function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivElement>) {
+type TProps = React.HTMLAttributes<HTMLDivElement> & {
+  onDateChange?: (from: Date, to?: Date) => void;
+  initialFrom: Date;
+  initialTo: Date;
+};
+
+export function DateRangePicker({ className, onDateChange, initialFrom, initialTo }: TProps) {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: initialFrom,
+    to: initialTo,
   });
+
+  const handleSetDate = (newDates: DateRange) => {
+    setDate(newDates);
+    onDateChange(newDates.from, newDates.to);
+  };
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -45,8 +56,8 @@ export function DateRangePicker({ className }: React.HTMLAttributes<HTMLDivEleme
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
-            numberOfMonths={2}
+            onSelect={handleSetDate}
+            numberOfMonths={1}
           />
         </PopoverContent>
       </Popover>

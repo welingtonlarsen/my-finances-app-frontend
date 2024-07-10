@@ -3,10 +3,10 @@ import ExpensesSummary from '@/features/dashboard/expenses-summary';
 import ExpensesTotalCardSecondary from '@/features/dashboard/expenses-total-card-secondary.tsx';
 import ExpensesChart from '@/features/dashboard/expenses-chart.tsx';
 import ExpensesTotalCards from '@/features/dashboard/expenses-total-cards';
-import { DateRangePicker } from '@/components/raw/date-range-picker';
 import SecondaryExpensesTotalCards from '@/features/dashboard/SecondaryExpensesTotalCards.tsx';
 import { useAppSelector } from '@/app/store.ts';
 import { getExpensesSum } from '@/features/dashboard/dashboard-slice.ts';
+import ExpensesDateRangePicker from '@/features/dashboard/expenses-date-range-picker';
 
 export default function DashboardPage() {
   // TODO: Remove selector logic from here because it's only a page!
@@ -17,7 +17,7 @@ export default function DashboardPage() {
     <>
       <div className="flex justify-between">
         <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
-        {/* <DateRangePicker /> */}
+        <ExpensesDateRangePicker />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2 gap-4 xl:gap-8">

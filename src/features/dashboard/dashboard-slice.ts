@@ -1,9 +1,10 @@
 import { RootState } from '@/app/store';
 import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-types';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { initialPagination } from './constants/constants';
 import { AxiosInstance } from '@/app/axios-instance';
+import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '@/lib/date-utils';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -90,6 +91,12 @@ type TState = {
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
   };
+  filters: {
+    date: {
+      from: string;
+      to: string;
+    };
+  };
 };
 
 const initialState: TState = {
@@ -119,12 +126,22 @@ const initialState: TState = {
     status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
+  filters: {
+    date: {
+      from: getFirstDayOfCurrentMonth().toISOString(),
+      to: getLastDayOfCurrentMonth().toISOString(),
+    },
+  },
 };
 
 const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
-  reducers: {},
+  reducers: {
+    setDateFilter(state, action: PayloadAction<{ from: string; to: string }>) {
+      state.filters.date = action.payload;
+    },
+  },
   extraReducers(builder) {
     // fetchCategories
     builder.addCase(fetchCategories.pending, (state) => {
@@ -200,6 +217,8 @@ const dashboardSlice = createSlice({
   },
 });
 
+export const { setDateFilter } = dashboardSlice.actions;
+
 export const getCategories = (state: RootState) => {
   return {
     categories: state.dashboard.categories.data,
@@ -229,6 +248,10 @@ export const getExpensesSum = (state: RootState) => {
     expensesSum: state.dashboard.expensesSum.data,
     isLoading: state.dashboard.expensesSum.status === 'loading',
   };
+};
+
+export const getDashboardFilters = (state: RootState) => {
+  return state.dashboard.filters;
 };
 
 export default dashboardSlice.reducer;
