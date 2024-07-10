@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { NewExpenseDialog } from '@/features/dashboard/new-expense-dialog.tsx';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { useEffect, useState } from 'react';
-import { fetchExpenses, getExpenses, deleteExpense } from './dashboard-slice';
+import { fetchExpenses, getExpenses, deleteExpense, getDashboardFilters } from './dashboard-slice';
 import { formatDateToYearMonthDay } from '@/lib/date-utils';
 import { getSVGOfPaymentMethod } from '@/lib/payment-utils';
 import { formatMoney } from '@/lib/money-utils';
@@ -30,14 +30,15 @@ export default function ExpensesSummary() {
 
   const dispatch = useAppDispatch();
   const { expenses, totalAmount, isLoading: isExpensesLoading, isDeleting } = useAppSelector(getExpenses);
+  const dashboardFilters = useAppSelector(getDashboardFilters);
 
   useEffect(() => {
-    dispatch(fetchExpenses(pagination));
-  }, []);
+    dispatch(fetchExpenses({ ...pagination, from: dashboardFilters.date.from, to: dashboardFilters.date.to }));
+  }, [dashboardFilters, dispatch]);
 
   const fetchMoreExpenses = () => {
     const newPagination = { ...pagination, size: pagination.size + pageSize };
-    dispatch(fetchExpenses(newPagination));
+    dispatch(fetchExpenses({ ...newPagination, from: dashboardFilters.date.from, to: dashboardFilters.date.to }));
     setPagination(newPagination);
   };
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import ExpensesTotalCard from './expenses-total-card';
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { fetchExpensesSum, getExpensesSum } from './dashboard-slice';
+import { fetchExpensesSum, getDashboardFilters, getExpensesSum } from './dashboard-slice';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { NewPaymentMethodDialog } from './new-payment-method';
@@ -11,10 +11,11 @@ export default function ExpensesTotalCards() {
   const dispatch = useAppDispatch();
 
   const { expensesSum } = useAppSelector(getExpensesSum);
+  const dashboardFiltes = useAppSelector(getDashboardFilters);
 
   useEffect(() => {
-    dispatch(fetchExpensesSum());
-  }, []);
+    dispatch(fetchExpensesSum(dashboardFiltes.date));
+  }, [dashboardFiltes, dispatch]);
 
   const mainExpensesSum = expensesSum.length > 3 ? expensesSum.slice(0, 4) : expensesSum;
   const secondaryExpensesSum = expensesSum.length > 3 ? [...expensesSum].splice(4, 4) : [];

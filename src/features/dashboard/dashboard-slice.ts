@@ -20,11 +20,14 @@ export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMetho
 
 export const deletePaymentMethod = createAsyncThunk(
   'dashboard/deletePaymentMethod',
-  async (id: number, { dispatch }) => {
+  async (id: number, { dispatch, getState }) => {
     await axios.delete(`${BASE_URL}/paymentmethod/${id}`);
+
+    const state = getState() as RootState;
+
     dispatch(fetchPaymentMethods());
-    dispatch(fetchExpenses(initialPagination));
-    dispatch(fetchExpensesSum());
+    dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date }));
+    dispatch(fetchExpensesSum(state.dashboard.filters.date));
   },
 );
 
@@ -39,29 +42,40 @@ export const savePaymentMethod = createAsyncThunk(
 
 export const fetchExpenses = createAsyncThunk(
   'dashboard/fetchExpenses',
-  async ({ page, size }: { page: number; size: number }) => {
+  async ({ page, size, from, to }: { page: number; size: number; from: string; to: string }) => {
     const response = await AxiosInstance.Authenticated.get<{ expenses: Expense[]; totalAmount: number }>('/expense', {
-      params: { page, size },
+      page,
+      size,
+      from,
+      to,
     });
     return response;
   },
 );
 
-export const fetchExpensesSum = createAsyncThunk('dashboard/fetchExpensesSum', async () => {
-  const response = await AxiosInstance.Authenticated.get<ExpenseSum[]>('/expenses/sum');
-  return response;
-});
+export const fetchExpensesSum = createAsyncThunk(
+  'dashboard/fetchExpensesSum',
+  async ({ from, to }: { from: string; to: string }) => {
+    const response = await AxiosInstance.Authenticated.get<ExpenseSum[]>('/expenses/sum', { from, to });
+    return response;
+  },
+);
 
-export const saveExpense = createAsyncThunk('dashboard/saveExpense', async (expense: Expense, { dispatch }) => {
-  const response = await axios.post<Expense>(`${BASE_URL}/expense`, expense);
-  await dispatch(fetchExpenses(initialPagination)).unwrap();
-  dispatch(fetchExpensesSum());
-  return response;
-});
+export const saveExpense = createAsyncThunk(
+  'dashboard/saveExpense',
+  async (expense: Expense, { dispatch, getState }) => {
+    const response = await axios.post<Expense>(`${BASE_URL}/expense`, expense);
+    const state = getState() as RootState;
+    await dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date })).unwrap();
+    dispatch(fetchExpensesSum(state.dashboard.filters.date));
+    return response;
+  },
+);
 
-export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch }) => {
+export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch, getState }) => {
   await axios.delete(`${BASE_URL}/expenses/${id}`);
-  dispatch(fetchExpenses(initialPagination));
+  const state = getState() as RootState;
+  dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date }));
 });
 
 type TState = {

@@ -2,7 +2,7 @@ import { format, parseISO } from 'date-fns';
 
 export function formatDateToYearMonthDay(dateString: string) {
   const date = new Date(dateString);
-  return `${date.getFullYear()}/${date.getUTCMonth()}/${date.getUTCDate()}`;
+  return `${date.getFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
 }
 
 export function getTodayString() {
