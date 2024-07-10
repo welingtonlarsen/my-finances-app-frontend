@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { DateRangePicker } from '@/components/raw/date-range-picker';
 import { getDashboardFilters, setDateFilter } from './dashboard-slice';
-import { createDateFromISOString, toISOString } from '@/lib/date-utils';
+import { createDateFromISOString, toISOString, toISOStringEndOfDay } from '@/lib/date-utils';
 
 export default function ExpensesDateRangePicker() {
   const dispatch = useAppDispatch();
@@ -11,7 +11,7 @@ export default function ExpensesDateRangePicker() {
     dispatch(
       setDateFilter({
         from: toISOString(from),
-        to: toISOString(to),
+        to: toISOStringEndOfDay(to),
       }),
     );
   };

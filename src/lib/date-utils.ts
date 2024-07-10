@@ -1,4 +1,4 @@
-import { format, parseISO } from 'date-fns';
+import { format, set } from 'date-fns';
 
 export function formatDateToYearMonthDay(dateString: string) {
   const date = new Date(dateString);
@@ -31,4 +31,9 @@ export function createDateFromISOString(isoString: string) {
 
 export function toISOString(date: Date) {
   return format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS");
+}
+
+export function toISOStringEndOfDay(date: Date) {
+  const endOfDay = set(date, { hours: 23, minutes: 59, seconds: 59, milliseconds: 999 });
+  return format(endOfDay, "yyyy-MM-dd'T'HH:mm:ss.SSS");
 }
