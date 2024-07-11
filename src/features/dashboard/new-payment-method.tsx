@@ -15,31 +15,9 @@ import SelectFormField from '@/components/input/select-form-field.tsx';
 import { SelectItem } from '@/components/ui/select.tsx';
 import { useAppDispatch } from '@/app/store';
 import { useState } from 'react';
-import { getSVGOfPaymentMethod } from '@/lib/payment-utils';
-import { PaymentMethod, PaymentType } from '@/types/expense-types';
+import { PaymentType } from '@/types/expense-types';
 import useNewPaymentMethodForm from './useNewPaymentMethodForm';
 import { Tooltip } from '@/components/tooltip/tooltip.tsx';
-
-function PaymentMethodSelectFormField({ paymentMethod }: { paymentMethod: PaymentMethod }) {
-  return (
-    <SelectItem key={paymentMethod.id} value={String(paymentMethod.id)} className="flex flex-row">
-      <div className="flex items-start gap-3">
-        <img
-          alt="Package icon"
-          className=""
-          height={20}
-          src={getSVGOfPaymentMethod(paymentMethod.paymentType)}
-          style={{
-            aspectRatio: '20/20',
-            objectFit: 'cover',
-          }}
-          width={20}
-        />
-        <p>{paymentMethod.name}</p>
-      </div>
-    </SelectItem>
-  );
-}
 
 const paymentsTypes: { title: string; paymentType: PaymentType }[] = [
   { title: 'Credit Card', paymentType: 'CREDIT_CARD' },
@@ -64,8 +42,8 @@ export function NewPaymentMethodDialog({ disabled }: TProps) {
         <>
           {disabled && (
             <Tooltip tip="Maximum number of methods reached.">
-              <div className="ml-2 rounded-full h-8 w-8 border border-gray-200 flex items-center justify-center">
-                <Plus className="h-4 w-4 text-black" />
+              <div className="ml-2 rounded-full h-8 w-8 border border-gray-700 flex items-center justify-center">
+                <Plus className="h-4 w-4 " />
               </div>
             </Tooltip>
           )}

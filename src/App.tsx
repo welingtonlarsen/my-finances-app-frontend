@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router-dom';
-import DashboardPage from '@/pages/dashboard';
+import DashboardPage from '@/pages/dashboard-page';
 import { Toaster } from '@/components/ui/toaster';
 import { router } from './app/routes';
 import { ThemeProvider } from './app/providers/theme-provider';

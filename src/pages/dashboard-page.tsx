@@ -1,4 +1,4 @@
-import { Layout } from '../../components/layout';
+import { Layout } from '../components/layout';
 import ExpensesSummary from '@/features/dashboard/expenses-summary';
 import ExpensesTotalCardSecondary from '@/features/dashboard/expenses-total-card-secondary.tsx';
 import ExpensesChart from '@/features/dashboard/expenses-chart.tsx';
@@ -11,7 +11,6 @@ import ExpensesDateRangePicker from '@/features/dashboard/expenses-date-range-pi
 export default function DashboardPage() {
   // TODO: Remove selector logic from here because it's only a page!
   const { expensesSum } = useAppSelector(getExpensesSum);
-  const secondaryExpensesSum = expensesSum.length > 3 ? [...expensesSum].splice(4, 4) : [];
 
   return (
     <>
@@ -23,13 +22,6 @@ export default function DashboardPage() {
         <div className="col-span-2 gap-4 xl:gap-8">
           <ExpensesTotalCards />
         </div>
-        {secondaryExpensesSum.length > 0 && (
-          <div className="hidden lg:grid xl:hidden grid col-span-2 grid-cols-3 gap-2">
-            <div className="col-span-1 grid grid-cols-2 h-14 gap-1">
-              <SecondaryExpensesTotalCards />
-            </div>
-          </div>
-        )}
         <div className="col-span-2 xl:col-span-1 xl:mt-3">
           <ExpensesSummary />
         </div>

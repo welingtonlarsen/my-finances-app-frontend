@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+import { isMobile } from 'react-device-detect';
+
 type TProps = React.HTMLAttributes<HTMLDivElement> & {
   onDateChange?: (from: Date, to?: Date) => void;
   initialFrom: Date;
@@ -27,6 +29,44 @@ export function DateRangePicker({ className, onDateChange, initialFrom, initialT
     onDateChange(newDates.from, newDates.to);
   };
 
+  const DateDisplay = React.useMemo(() => {
+    if (isMobile) {
+      return (
+        <>
+          {date?.from ? (
+            date.to ? (
+              <>
+                {format(date.from, 'LLL dd')} - {format(date.to, 'LLL dd')}
+              </>
+            ) : (
+              format(date.from, 'LLL dd, y')
+            )
+          ) : (
+            <span>Pick a date</span>
+          )}
+        </>
+      );
+    }
+
+    if (!isMobile) {
+      return (
+        <>
+          {date?.from ? (
+            date.to ? (
+              <>
+                {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
+              </>
+            ) : (
+              format(date.from, 'LLL dd, y')
+            )
+          ) : (
+            <span>Pick a date</span>
+          )}
+        </>
+      );
+    }
+  }, [date]);
+
   return (
     <div className={cn('grid gap-2', className)}>
       <Popover>
@@ -34,20 +74,10 @@ export function DateRangePicker({ className, onDateChange, initialFrom, initialT
           <Button
             id="date"
             variant={'outline'}
-            className={cn('justify-start text-left font-normal', !date && 'text-muted-foreground')}
+            className={cn('justify-start text-left font-normal', !date && 'text-muted-foreground', isMobile && 'h-8')}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
-                <>
-                  {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
-                </>
-              ) : (
-                format(date.from, 'LLL dd, y')
-              )
-            ) : (
-              <span>Pick a date</span>
-            )}
+            {DateDisplay}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">

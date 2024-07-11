@@ -21,7 +21,6 @@ import { initialPagination, pageSize } from './constants/constants';
 
 const canFetchMore = (itemsLenght: number, currentPage: number, pageSize: number) => {
   const maxItems = currentPage * pageSize;
-  console.log(itemsLenght, maxItems);
   return itemsLenght === maxItems;
 };
 
@@ -46,8 +45,6 @@ export default function ExpensesSummary() {
     dispatch(deleteExpense(id));
     setPagination(initialPagination);
   };
-
-  console.log({ isDeleting });
 
   return (
     <Card>
@@ -91,6 +88,7 @@ export default function ExpensesSummary() {
               </DropdownMenu>
             </div>
           ))}
+        {!expenses.length && <p className="text-muted-foreground">No expenses found for selected date range.</p>}
       </CardContent>
       <CardFooter className="flex items-center justify-center py-2">
         {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

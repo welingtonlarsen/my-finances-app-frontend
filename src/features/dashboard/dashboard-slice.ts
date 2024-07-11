@@ -21,7 +21,7 @@ export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMetho
 export const deletePaymentMethod = createAsyncThunk(
   'dashboard/deletePaymentMethod',
   async (id: number, { dispatch, getState }) => {
-    await axios.delete(`${BASE_URL}/paymentmethod/${id}`);
+    await AxiosInstance.Authenticated.deleteRequest(`/paymentmethod/${id}`);
 
     const state = getState() as RootState;
 
@@ -33,9 +33,14 @@ export const deletePaymentMethod = createAsyncThunk(
 
 export const savePaymentMethod = createAsyncThunk(
   'dashboard/savePaymentMethod',
-  async (paymentMethod: PaymentMethod, { dispatch }) => {
-    const response = await axios.post<PaymentMethod>(`${BASE_URL}/paymentmethod`, paymentMethod);
+  async (paymentMethod: PaymentMethod, { dispatch, getState }) => {
+    const response = await AxiosInstance.Authenticated.post<PaymentMethod, PaymentMethod>(
+      '/paymentmethod',
+      paymentMethod,
+    );
     dispatch(fetchPaymentMethods());
+    const state = getState() as RootState;
+    dispatch(fetchExpensesSum(state.dashboard.filters.date));
     return response;
   },
 );
@@ -64,7 +69,7 @@ export const fetchExpensesSum = createAsyncThunk(
 export const saveExpense = createAsyncThunk(
   'dashboard/saveExpense',
   async (expense: Expense, { dispatch, getState }) => {
-    const response = await axios.post<Expense>(`${BASE_URL}/expense`, expense);
+    const response = await AxiosInstance.Authenticated.post<Expense, Expense>('/expense', expense);
     const state = getState() as RootState;
     await dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date })).unwrap();
     dispatch(fetchExpensesSum(state.dashboard.filters.date));
@@ -73,7 +78,7 @@ export const saveExpense = createAsyncThunk(
 );
 
 export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch, getState }) => {
-  await axios.delete(`${BASE_URL}/expenses/${id}`);
+  await AxiosInstance.Authenticated.deleteRequest(`/expense/${id}`);
   const state = getState() as RootState;
   dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date }));
 });

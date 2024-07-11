@@ -23,7 +23,6 @@ export function InputFormField<T extends FieldValues>({ form, name, label, type 
   ) => {
     const value = event.target.value;
     if (value) {
-      console.log(value);
       field.onChange(Number(event.target.value));
     } else {
       field.onChange('');

@@ -26,7 +26,6 @@ export default function useNewPaymentMethodForm({ closeDialog }: { closeDialog: 
   const dispatch = useAppDispatch();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log({ data });
     await dispatch(savePaymentMethod(data as any)).unwrap();
     closeDialog();
     form.reset({ ...defaultValues });

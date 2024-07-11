@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout';
-import DashboardPage from '@/pages/dashboard';
-import SignInPage from '@/pages/signin';
+import DashboardPage from '@/pages/dashboard-page';
+import SignInPage from '@/pages/signin-page.tsx';
 import { createBrowserRouter, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import globalRouter from '@/app/global-router.ts';
 

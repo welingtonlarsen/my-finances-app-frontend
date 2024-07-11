@@ -56,7 +56,6 @@ export default function useNewExpenseForm({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('render');
     if (loadedDefaultValues.paymentMethodId) {
       form.setValue('paymentMethodId', loadedDefaultValues.paymentMethodId);
     }

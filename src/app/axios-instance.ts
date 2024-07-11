@@ -14,7 +14,6 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      console.log('Unauthorized');
       globalRouter.navigate('/login');
     }
     return error;
@@ -26,6 +25,14 @@ export namespace AxiosInstance {
   export namespace Authenticated {
     export function get<T>(path: string, params?: any) {
       return axios.get<T>(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${getAuthToken()}` }, params });
+    }
+
+    export function post<T, K>(path: string, data: K) {
+      return axios.post<T>(`${BASE_URL}${path}`, data, { headers: { Authorization: `Bearer ${getAuthToken()}` } });
+    }
+
+    export function deleteRequest<T>(path: string) {
+      return axios.delete<T>(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${getAuthToken()}` } });
     }
   }
 }
