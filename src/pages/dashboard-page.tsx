@@ -15,7 +15,7 @@ export default function DashboardPage() {
   return (
     <>
       <div className="flex justify-between">
-        <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">Gastos variáveis</h1>
         <ExpensesDateRangePicker />
       </div>
       <div className="grid grid-cols-2 gap-4">

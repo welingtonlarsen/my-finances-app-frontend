@@ -46,7 +46,7 @@ export function Layout({ title }: TLayout) {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <button className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
                 <Home className="h-4 w-4" />
-                Dashboard
+                Gastos variáveis
               </button>
               {/* <button className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                 <ShoppingCart className="h-4 w-4" />
@@ -102,7 +102,7 @@ export function Layout({ title }: TLayout) {
                 </button>
                 <button className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground">
                   <Home className="h-5 w-5" />
-                  Dashboard
+                  Gastos variáveis
                 </button>
                 {/* <button className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
                   <ShoppingCart className="h-5 w-5" />
