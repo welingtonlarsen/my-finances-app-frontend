@@ -66,7 +66,7 @@ export default function ExpensesSummary() {
               <div>
                 <div className="flex items-center">
                   <p className="text-sm font-medium leading-none">
-                    {isMobile ? truncateString(expense.description, 20) : expense.description}
+                    {isMobile ? truncateString(expense.description, 14) : expense.description}
                   </p>
                   &nbsp;
                   <p className="text-xs text-muted-foreground">({formatDateToYearMonthDay(expense.date)})</p>
