@@ -1,6 +1,6 @@
 import axios from 'axios';
 import globalRouter from './global-router';
-import { getAuthToken } from '@/lib/local-storage-utils';
+import { deleteAuthToken, getAuthToken } from '@/lib/local-storage-utils';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -14,6 +14,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
+      deleteAuthToken();
       globalRouter.navigate('/login');
     }
     return error;
@@ -24,15 +25,20 @@ axiosInstance.interceptors.response.use(
 export namespace AxiosInstance {
   export namespace Authenticated {
     export function get<T>(path: string, params?: any) {
-      return axios.get<T>(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${getAuthToken()}` }, params });
+      return axiosInstance.get<T>(`${BASE_URL}${path}`, {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+        params,
+      });
     }
 
     export function post<T, K>(path: string, data: K) {
-      return axios.post<T>(`${BASE_URL}${path}`, data, { headers: { Authorization: `Bearer ${getAuthToken()}` } });
+      return axiosInstance.post<T>(`${BASE_URL}${path}`, data, {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      });
     }
 
     export function deleteRequest<T>(path: string) {
-      return axios.delete<T>(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${getAuthToken()}` } });
+      return axiosInstance.delete<T>(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${getAuthToken()}` } });
     }
   }
 }
