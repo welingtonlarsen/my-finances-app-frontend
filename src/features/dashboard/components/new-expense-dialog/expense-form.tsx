@@ -6,11 +6,11 @@ import { Form } from '@/components/ui/form.tsx';
 import { SelectItem } from '@/components/ui/select';
 import { getSVGOfPaymentMethod } from '@/lib/payment-utils';
 import { Category, PaymentMethod } from '@/types/expense-types';
-import { getCategories, getExpenses, getPaymentMethods } from '../../dashboard-slice';
+import { getCategories, getExpenses, getPaymentMethods } from '../../slice/dashboard-slice';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import useNewExpenseForm from '../../useNewExpenseForm';
+import useNewExpenseForm from '../../hooks/useNewExpenseForm';
 import { useMemo } from 'react';
 
 function PaymentMethodSelectFormField({ paymentMethod }: { paymentMethod: PaymentMethod }) {

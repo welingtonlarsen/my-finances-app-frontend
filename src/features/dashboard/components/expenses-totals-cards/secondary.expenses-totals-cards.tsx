@@ -1,6 +1,6 @@
-import ExpensesTotalCardSecondary from '@/features/dashboard/expenses-total-card-secondary.tsx';
 import { useAppSelector } from '@/app/store.ts';
-import { getExpensesSum } from '@/features/dashboard/dashboard-slice.ts';
+import { getExpensesSum } from '@/features/dashboard/slice/dashboard-slice.ts';
+import ExpensesTotalCardSecondary from './expenses-total-card-secondary';
 
 export default function SecondaryExpensesTotalCards() {
   const { expensesSum } = useAppSelector(getExpensesSum);

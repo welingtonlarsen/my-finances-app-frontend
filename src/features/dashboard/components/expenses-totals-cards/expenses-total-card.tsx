@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useAppDispatch, useAppSelector } from '@/app/store.ts';
-import { deletePaymentMethod, getPaymentMethods } from '@/features/dashboard/dashboard-slice.ts';
+import { deletePaymentMethod, getPaymentMethods } from '@/features/dashboard/slice/dashboard-slice.ts';
 import { AlertDialog } from '@/components/alert-dialog/alert-dialog.tsx';
 import React from 'react';
 

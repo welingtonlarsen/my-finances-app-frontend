@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { NewExpenseDialog } from '@/features/dashboard/components/new-expense-dialog';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { useEffect, useState } from 'react';
-import { fetchExpenses, getExpenses, deleteExpense, getDashboardFilters } from '../../dashboard-slice';
+import { fetchExpenses, getExpenses, deleteExpense, getDashboardFilters } from '../../slice/dashboard-slice';
 import { formatMoney } from '@/lib/money-utils';
 import { Loader2 } from 'lucide-react';
 import { initialPagination, pageSize } from '../../constants/constants';
@@ -18,7 +18,7 @@ export default function ExpensesList() {
   const [pagination, setPagination] = useState(initialPagination);
 
   const dispatch = useAppDispatch();
-  const { expenses, totalAmount, isLoading: isExpensesLoading, isDeleting } = useAppSelector(getExpenses);
+  const { expenses, totalAmount, isLoading: isExpensesLoading } = useAppSelector(getExpenses);
   const dashboardFilters = useAppSelector(getDashboardFilters);
 
   useEffect(() => {

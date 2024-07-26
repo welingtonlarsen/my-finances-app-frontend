@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/store';
-import { savePaymentMethod } from './dashboard-slice';
+import { savePaymentMethod } from '../slice/dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({

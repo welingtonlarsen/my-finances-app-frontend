@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import ExpenseForm from './expense-form';
-import { fetchCategories, fetchPaymentMethods } from '../../dashboard-slice';
+import { fetchCategories, fetchPaymentMethods } from '../../slice/dashboard-slice';
 import { useAppDispatch } from '@/app/store';
 
 export function NewExpenseDialog() {

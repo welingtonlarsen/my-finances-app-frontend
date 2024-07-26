@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import ExpensesTotalCard from './expenses-total-card';
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { fetchExpensesSum, getDashboardFilters, getExpensesSum } from './dashboard-slice';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { NewPaymentMethodDialog } from './new-payment-method';
-import SecondaryExpensesTotalCards from '@/features/dashboard/SecondaryExpensesTotalCards.tsx';
+import { fetchExpensesSum, getDashboardFilters, getExpensesSum } from '../../slice/dashboard-slice';
+import SecondaryExpensesTotalCards from './secondary.expenses-totals-cards';
+import { NewPaymentMethodDialog } from '../new-payment-method-dialog';
 
 export default function ExpensesTotalCards() {
   const dispatch = useAppDispatch();

@@ -2,7 +2,7 @@ import { RootState } from '@/app/store';
 import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { initialPagination } from './constants/constants';
+import { initialPagination } from '../constants/constants';
 import { AxiosInstance } from '@/app/axios-instance';
 import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '@/lib/date-utils';
 

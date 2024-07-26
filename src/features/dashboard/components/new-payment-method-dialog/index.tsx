@@ -16,8 +16,8 @@ import { SelectItem } from '@/components/ui/select.tsx';
 import { useAppDispatch } from '@/app/store';
 import { useState } from 'react';
 import { PaymentType } from '@/types/expense-types';
-import useNewPaymentMethodForm from './useNewPaymentMethodForm';
 import { Tooltip } from '@/components/tooltip/tooltip.tsx';
+import useNewPaymentMethodForm from '../../hooks/useNewPaymentMethodForm';
 
 const paymentsTypes: { title: string; paymentType: PaymentType }[] = [
   { title: 'Credit Card', paymentType: 'CREDIT_CARD' },

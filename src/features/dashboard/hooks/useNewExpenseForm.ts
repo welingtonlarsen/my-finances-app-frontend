@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/store';
-import { saveExpense } from './dashboard-slice';
+import { saveExpense } from '../slice/dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useMemo, useRef } from 'react';
 
