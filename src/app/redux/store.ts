@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import dashboardReducer from '../features/dashboard/slice/dashboard-slice';
+import dashboardReducer from '../../features/dashboard/slice/dashboard-slice';
 import authReducer from '@/features/auth/slice/auth-slice.ts';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 

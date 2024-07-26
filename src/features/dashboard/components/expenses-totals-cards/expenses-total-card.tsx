@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu.tsx';
 import { Button } from '@/components/ui/button.tsx';
-import { useAppDispatch, useAppSelector } from '@/app/store.ts';
+import { useAppDispatch, useAppSelector } from '@/app/redux/store.ts';
 import { deletePaymentMethod, getPaymentMethods } from '@/features/dashboard/slice/dashboard-slice.ts';
 import { AlertDialog } from '@/components/alert-dialog/alert-dialog.tsx';
 import React from 'react';

@@ -2,7 +2,7 @@ import { Layout } from '@/components/layout';
 import DashboardPage from '@/pages/dashboard-page';
 import SignInPage from '@/pages/signin-page.tsx';
 import { createBrowserRouter, Navigate, Outlet, useNavigate } from 'react-router-dom';
-import globalRouter from '@/app/global-router.ts';
+import globalRouter from '@/app/router/global-router.ts';
 
 const RouteWall = ({ privateRoute }: { privateRoute?: boolean }) => {
   const navigate = useNavigate();

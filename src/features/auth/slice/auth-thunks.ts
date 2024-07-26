@@ -1,7 +1,7 @@
 import { AsyncThunkPayloadCreator, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { Credentials, UserDetails } from '@/features/auth/types/auth-types.ts';
-import globalRouter from '@/app/global-router.ts';
+import globalRouter from '@/app/router/global-router.ts';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 

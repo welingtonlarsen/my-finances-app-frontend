@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/app/store.ts';
+import { useAppSelector } from '@/app/redux/store.ts';
 import { getExpensesSum } from '@/features/dashboard/slice/dashboard-slice.ts';
 import ExpensesTotalCardSecondary from './expenses-total-card-secondary';
 

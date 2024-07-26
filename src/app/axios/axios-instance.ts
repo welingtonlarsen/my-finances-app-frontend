@@ -1,5 +1,5 @@
 import axios from 'axios';
-import globalRouter from './global-router';
+import globalRouter from '../router/global-router';
 import { deleteAuthToken, getAuthToken } from '@/lib/local-storage-utils';
 
 const BASE_URL = import.meta.env.VITE_API_URL;

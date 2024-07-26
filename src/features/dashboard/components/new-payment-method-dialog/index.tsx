@@ -13,7 +13,7 @@ import { Form } from '@/components/ui/form.tsx';
 import { InputFormField } from '@/components/input/input-form-field.tsx';
 import SelectFormField from '@/components/input/select-form-field.tsx';
 import { SelectItem } from '@/components/ui/select.tsx';
-import { useAppDispatch } from '@/app/store';
+import { useAppDispatch } from '@/app/redux/store';
 import { useState } from 'react';
 import { PaymentType } from '@/types/expense-types';
 import { Tooltip } from '@/components/tooltip/tooltip.tsx';

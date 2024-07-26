@@ -1,9 +1,9 @@
-import { RootState } from '@/app/store';
+import { RootState } from '@/app/redux/store';
 import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { initialPagination } from '../constants/constants';
-import { AxiosInstance } from '@/app/axios-instance';
+import { AxiosInstance } from '@/app/axios/axios-instance';
 import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '@/lib/date-utils';
 
 const BASE_URL = import.meta.env.VITE_API_URL;

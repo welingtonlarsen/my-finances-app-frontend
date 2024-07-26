@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { useState } from 'react';
 import { authenticate } from '@/features/auth/slice/auth-thunks.ts';
 import { Credentials } from '@/features/auth/types/auth-types.ts';
-import { useAppDispatch, useAppSelector } from '@/app/store.ts';
+import { useAppDispatch, useAppSelector } from '@/app/redux/store.ts';
 import { getError, isLoading } from '../slice/auth-selectors';
 // import { authUser } from "@/app/authSlice"
 // import globalRouter from "@/config/globalRouter"

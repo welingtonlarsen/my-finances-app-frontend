@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button.tsx';
 import { NewExpenseDialog } from '@/features/dashboard/components/new-expense-dialog';
-import { useAppDispatch, useAppSelector } from '@/app/store';
+import { useAppDispatch, useAppSelector } from '@/app/redux/store';
 import { useEffect, useState } from 'react';
 import { fetchExpenses, getExpenses, deleteExpense, getDashboardFilters } from '../../slice/dashboard-slice';
 import { formatMoney } from '@/lib/money-utils';
