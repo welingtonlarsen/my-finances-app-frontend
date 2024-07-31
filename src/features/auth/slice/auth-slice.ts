@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, UserDetails } from '@/features/auth/types/auth-types.ts';
 import { authenticate } from '@/features/auth/slice/auth-thunks.ts';
+import { deleteAuthToken } from '@/lib/local-storage-utils';
+import globalRouter from '@/app/router/global-router';
 
 const initialState: AuthState = {
   status: 'idle',
@@ -11,7 +13,13 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    unauthenticate(state) {
+      state.token = null;
+      deleteAuthToken();
+      globalRouter.navigate('/login');
+    }
+  },
   extraReducers(builder) {
     builder.addCase(authenticate.pending, (state) => {
       state.status = 'loading';
@@ -30,5 +38,7 @@ const authSlice = createSlice({
     });
   },
 });
+
+export const { unauthenticate } = authSlice.actions;
 
 export default authSlice.reducer;
