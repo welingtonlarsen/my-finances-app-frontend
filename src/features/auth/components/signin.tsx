@@ -77,7 +77,7 @@ export default function SignIn() {
           </CardHeader>
           <CardContent className="space-y-4">
             {!!errorMessage && (
-              <Alert className="bg-red-50 dark:bg-red-900 border-red-500 dark:border-red-200" variant="destructive">
+              <Alert variant="destructive">
                 <AlertTriangleIcon className="h-4 w-4" />
                 <AlertTitle>Authentication error</AlertTitle>
                 <AlertDescription>{errorMessage}</AlertDescription>
