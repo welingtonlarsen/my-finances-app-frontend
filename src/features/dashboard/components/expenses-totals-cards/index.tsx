@@ -1,23 +1,25 @@
 import { useEffect } from 'react';
 import ExpensesTotalCard from './expenses-total-card';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
-import SecondaryExpensesTotalCards from './secondary.expenses-totals-cards';
 import { NewPaymentMethodDialog } from '../new-payment-method-dialog';
 import { fetchExpensesSum } from '../../slice/dashboard-thunks';
 import { getExpensesSum, getDashboardFilters } from '../../slice/dashboard-selectors';
+import ExpensesTotalCardSecondary from './expenses-total-card-secondary';
 
 export default function ExpensesTotalCards() {
   const dispatch = useAppDispatch();
 
   const { expensesSum } = useAppSelector(getExpensesSum);
-  const dashboardFiltes = useAppSelector(getDashboardFilters);
+  const dashboardFilters = useAppSelector(getDashboardFilters);
 
   useEffect(() => {
-    dispatch(fetchExpensesSum(dashboardFiltes.date));
-  }, [dashboardFiltes, dispatch]);
+    dispatch(fetchExpensesSum(dashboardFilters.date));
+  }, [dashboardFilters, dispatch]);
 
   const mainExpensesSum = expensesSum.length > 3 ? expensesSum.slice(0, 4) : expensesSum;
   const secondaryExpensesSum = expensesSum.length > 3 ? [...expensesSum].splice(4, 4) : [];
+
+  const isEnabledAddMorePaymentMethod = mainExpensesSum.length === 4;
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-9 gap-3 w-full">
@@ -27,14 +29,16 @@ export default function ExpensesTotalCards() {
         </div>
       ))}
 
-      {secondaryExpensesSum.length > 0 && (
-        <div className="col-span-2 grid grid-cols-2 sm:col-span-4 gap-2 lg:hidden">
-          <SecondaryExpensesTotalCards />
-        </div>
-      )}
+      {secondaryExpensesSum.map(({ paymentMethodName, sum, paymentMethodId }) => {
+        return (
+          <div key={paymentMethodId}>
+            <ExpensesTotalCardSecondary total={sum} title={paymentMethodName} />
+          </div>
+        );
+      })}
 
       <div className="col-span-2 sm:col-span-1 flex justify-center sm:justify-start items-center lg:col-span-1">
-        <NewPaymentMethodDialog disabled={mainExpensesSum.length === 4} />
+        <NewPaymentMethodDialog disabled={isEnabledAddMorePaymentMethod} />
       </div>
     </div>
   );
