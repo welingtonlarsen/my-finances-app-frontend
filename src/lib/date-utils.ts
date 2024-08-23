@@ -37,3 +37,8 @@ export function toISOStringEndOfDay(date: Date) {
   const endOfDay = set(date, { hours: 23, minutes: 59, seconds: 59, milliseconds: 999 });
   return format(endOfDay, "yyyy-MM-dd'T'HH:mm:ss.SSS");
 }
+
+export function getTodayZeroHours() {
+  const today = new Date();
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}

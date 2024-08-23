@@ -45,6 +45,7 @@ export default function ExpensesList() {
         </div>
         <NewExpenseDialog />
       </CardHeader>
+
       <CardContent className="grid gap-8">
         {!!expenses.length &&
           expenses.map((expense) => (
@@ -52,6 +53,7 @@ export default function ExpensesList() {
           ))}
         {!expenses.length && <p className="text-muted-foreground">No expenses found for selected date range.</p>}
       </CardContent>
+
       <CardFooter className="flex items-center justify-center py-2">
         {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {!isExpensesLoading && canFetchMore(expenses.length, pagination.page, pagination.size) && (

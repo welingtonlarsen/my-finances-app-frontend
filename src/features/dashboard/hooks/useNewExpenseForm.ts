@@ -5,6 +5,7 @@ import { useAppDispatch } from '@/app/redux/store';
 import { saveExpense } from '../slice/dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useMemo, useRef } from 'react';
+import { getTodayZeroHours } from '@/lib/date-utils';
 
 const FormSchema = z.object({
   amount: z
@@ -34,7 +35,7 @@ const FormSchema = z.object({
 const defaultValues = {
   amount: undefined,
   description: '',
-  date: new Date(),
+  date: getTodayZeroHours(),
   installments: 1,
   currentInstallment: 1,
   paymentMethodId: 1,

@@ -23,8 +23,7 @@ export function InputFormField<T extends FieldValues>({ form, name, label, type 
   ) => {
     let value = event.target.value;
     // value = value.replace(/\,/, ".");
-    console.log('value: ', value);
-    
+
     if (value) {
       // Converte a string modificada (value) para número e passa para field.onChange
       field.onChange(Number(value));
