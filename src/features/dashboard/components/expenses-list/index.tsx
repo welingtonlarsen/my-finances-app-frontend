@@ -3,21 +3,19 @@ import { Button } from '@/components/ui/button.tsx';
 import { NewExpenseDialog } from '@/features/dashboard/components/new-expense-dialog';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
 import { useEffect, useState } from 'react';
-import { fetchExpenses, getExpenses, deleteExpense, getDashboardFilters } from '../../slice/dashboard-slice';
 import { formatMoney } from '@/lib/money-utils';
 import { Loader2 } from 'lucide-react';
 import { initialPagination, pageSize } from '../../constants/constants';
 import ExpenseItem from './expense-item';
-
-const canFetchMore = (itemsLenght: number, currentPage: number, pageSize: number) => {
-  const maxItems = currentPage * pageSize;
-  return itemsLenght === maxItems;
-};
+import { fetchExpenses, deleteExpense } from '../../slice/dashboard-thunks';
+import { getExpenses, getDashboardFilters } from '../../slice/dashboard-selectors';
+import { canFetchMore } from '@/lib/pagination-utils';
 
 export default function ExpensesList() {
   const [pagination, setPagination] = useState(initialPagination);
 
   const dispatch = useAppDispatch();
+
   const { expenses, totalAmount, isLoading: isExpensesLoading } = useAppSelector(getExpenses);
   const dashboardFilters = useAppSelector(getDashboardFilters);
 

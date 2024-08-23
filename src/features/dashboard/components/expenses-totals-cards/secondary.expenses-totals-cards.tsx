@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/app/redux/store.ts';
-import { getExpensesSum } from '@/features/dashboard/slice/dashboard-slice.ts';
 import ExpensesTotalCardSecondary from './expenses-total-card-secondary';
+import { getExpensesSum } from '../../slice/dashboard-selectors';
 
 export default function SecondaryExpensesTotalCards() {
   const { expensesSum } = useAppSelector(getExpensesSum);

@@ -14,7 +14,7 @@ import { Expense } from '@/types/expense-types';
 import { isMobile } from 'react-device-detect';
 import { Loader2, MoreVertical } from 'lucide-react';
 import { useAppSelector } from '@/app/redux/store';
-import { getExpenses } from '../../slice/dashboard-slice';
+import { getExpenses } from '../../slice/dashboard-selectors';
 
 type TProps = {
   expense: Expense;

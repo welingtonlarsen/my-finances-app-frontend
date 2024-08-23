@@ -8,8 +8,6 @@ import { authenticate } from '@/features/auth/slice/auth-thunks.ts';
 import { Credentials } from '@/features/auth/types/auth-types.ts';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store.ts';
 import { getError, isLoading } from '../slice/auth-selectors';
-// import { authUser } from "@/app/authSlice"
-// import globalRouter from "@/config/globalRouter"
 
 function AlertTriangleIcon(props) {
   return (
@@ -56,11 +54,10 @@ export default function SignIn() {
   const [credentials, setCredentials] = useState<Credentials>({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const isAuthenticating = useAppSelector(isLoading);
   const { errorMessage } = useAppSelector(getError);
-
-  const dispatch = useAppDispatch();
-  // const { errorMessage } = useSelector((state) => state.auth);
 
   const onSubmit = async (e) => {
     e.preventDefault();

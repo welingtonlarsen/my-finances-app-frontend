@@ -2,10 +2,10 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/redux/store';
-import { saveExpense } from '../slice/dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useMemo, useRef } from 'react';
 import { getTodayZeroHours } from '@/lib/date-utils';
+import { saveExpense } from '../slice/dashboard-thunks';
 
 const FormSchema = z.object({
   amount: z

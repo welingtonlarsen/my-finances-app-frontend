@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import ExpensesTotalCard from './expenses-total-card';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
-import { fetchExpensesSum, getDashboardFilters, getExpensesSum } from '../../slice/dashboard-slice';
 import SecondaryExpensesTotalCards from './secondary.expenses-totals-cards';
 import { NewPaymentMethodDialog } from '../new-payment-method-dialog';
+import { fetchExpensesSum } from '../../slice/dashboard-thunks';
+import { getExpensesSum, getDashboardFilters } from '../../slice/dashboard-selectors';
 
 export default function ExpensesTotalCards() {
   const dispatch = useAppDispatch();

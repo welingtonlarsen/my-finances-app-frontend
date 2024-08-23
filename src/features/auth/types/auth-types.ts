@@ -1,7 +1,7 @@
-import { Status } from '@/types/state-types.ts';
+import { StateStatus } from '@/types/state-types.ts';
 
 export type AuthState = {
-  status: Status;
+  status: StateStatus;
   errorMessage: string;
   token: string;
 };

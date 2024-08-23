@@ -1,132 +1,27 @@
 import { RootState } from '@/app/redux/store';
-import { Category, Expense, ExpenseSum, PaymentMethod } from '@/types/expense-types';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { initialPagination } from '../constants/constants';
-import { AxiosInstance } from '@/app/axios/axios-instance';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '@/lib/date-utils';
+import {
+  fetchCategories,
+  fetchPaymentMethods,
+  deletePaymentMethod,
+  savePaymentMethod,
+  saveExpense,
+  fetchExpenses,
+  deleteExpense,
+  fetchExpensesSum,
+} from './dashboard-thunks';
+import { DashboardState } from '../types/dashboard-types';
 
-const BASE_URL = import.meta.env.VITE_API_URL;
-
-export const fetchCategories = createAsyncThunk('dashboard/fetchCategories', async () => {
-  const response = await AxiosInstance.Authenticated.get<Category[]>('/category');
-  return response;
-});
-
-export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMethods', async () => {
-  const response = await AxiosInstance.Authenticated.get<PaymentMethod[]>('/paymentmethod');
-  return response;
-});
-
-export const deletePaymentMethod = createAsyncThunk(
-  'dashboard/deletePaymentMethod',
-  async (id: number, { dispatch, getState }) => {
-    await AxiosInstance.Authenticated.deleteRequest(`/paymentmethod/${id}`);
-
-    const state = getState() as RootState;
-
-    dispatch(fetchPaymentMethods());
-    dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date }));
-    dispatch(fetchExpensesSum(state.dashboard.filters.date));
-  },
-);
-
-export const savePaymentMethod = createAsyncThunk(
-  'dashboard/savePaymentMethod',
-  async (paymentMethod: PaymentMethod, { dispatch, getState }) => {
-    const response = await AxiosInstance.Authenticated.post<PaymentMethod, PaymentMethod>(
-      '/paymentmethod',
-      paymentMethod,
-    );
-    dispatch(fetchPaymentMethods());
-    const state = getState() as RootState;
-    dispatch(fetchExpensesSum(state.dashboard.filters.date));
-    return response;
-  },
-);
-
-export const fetchExpenses = createAsyncThunk(
-  'dashboard/fetchExpenses',
-  async ({ page, size, from, to }: { page: number; size: number; from: string; to: string }) => {
-    const response = await AxiosInstance.Authenticated.get<{ expenses: Expense[]; totalAmount: number }>('/expense', {
-      page,
-      size,
-      from,
-      to,
-    });
-    return response;
-  },
-);
-
-export const fetchExpensesSum = createAsyncThunk(
-  'dashboard/fetchExpensesSum',
-  async ({ from, to }: { from: string; to: string }) => {
-    const response = await AxiosInstance.Authenticated.get<ExpenseSum[]>('/expenses/sum', { from, to });
-    return response;
-  },
-);
-
-export const saveExpense = createAsyncThunk(
-  'dashboard/saveExpense',
-  async (expense: Expense, { dispatch, getState }) => {
-    const response = await AxiosInstance.Authenticated.post<Expense, Expense>('/expense', expense);
-    const state = getState() as RootState;
-    await dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date })).unwrap();
-    dispatch(fetchExpensesSum(state.dashboard.filters.date));
-    return response;
-  },
-);
-
-export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch, getState }) => {
-  await AxiosInstance.Authenticated.deleteRequest(`/expense/${id}`);
-  const state = getState() as RootState;
-  dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date }));
-});
-
-type TState = {
-  categories: {
-    data: Category[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-  };
-  paymentMethods: {
-    data: PaymentMethod[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    saveStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
-    deleteStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-  };
-  expenses: {
-    data: {
-      expenses: Expense[];
-      totalAmount: number | null;
-    };
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    deletingStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-  };
-  expensesSum: {
-    data: ExpenseSum[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-  };
-  filters: {
-    date: {
-      from: string;
-      to: string;
-    };
-  };
-};
-
-const initialState: TState = {
+const initialState: DashboardState = {
   categories: {
     data: [],
-    status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    status: 'idle',
     error: null,
   },
   paymentMethods: {
     data: [],
-    status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    status: 'idle',
     saveStatus: 'idle',
     deleteStatus: 'idle',
     error: null,
@@ -136,13 +31,13 @@ const initialState: TState = {
       expenses: [],
       totalAmount: null,
     },
-    status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    status: 'idle',
     deletingStatus: 'idle',
     error: null,
   },
   expensesSum: {
     data: [],
-    status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
+    status: 'idle',
     error: null,
   },
   filters: {
@@ -237,40 +132,5 @@ const dashboardSlice = createSlice({
 });
 
 export const { setDateFilter } = dashboardSlice.actions;
-
-export const getCategories = (state: RootState) => {
-  return {
-    categories: state.dashboard.categories.data,
-    isLoading: state.dashboard.categories.status === 'loading',
-  };
-};
-
-export const getPaymentMethods = (state: RootState) => {
-  return {
-    paymentMethods: state.dashboard.paymentMethods.data,
-    isLoading: state.dashboard.paymentMethods.status === 'loading',
-    isDeleting: state.dashboard.paymentMethods.deleteStatus === 'loading',
-  };
-};
-
-export const getExpenses = (state: RootState) => {
-  return {
-    expenses: state.dashboard.expenses.data.expenses,
-    totalAmount: state.dashboard.expenses.data.totalAmount,
-    isLoading: state.dashboard.expenses.status === 'loading',
-    isDeleting: state.dashboard.expenses.deletingStatus === 'loading',
-  };
-};
-
-export const getExpensesSum = (state: RootState) => {
-  return {
-    expensesSum: state.dashboard.expensesSum.data,
-    isLoading: state.dashboard.expensesSum.status === 'loading',
-  };
-};
-
-export const getDashboardFilters = (state: RootState) => {
-  return state.dashboard.filters;
-};
 
 export default dashboardSlice.reducer;

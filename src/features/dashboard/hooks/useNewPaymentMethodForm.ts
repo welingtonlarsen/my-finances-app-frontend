@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch } from '@/app/redux/store';
-import { savePaymentMethod } from '../slice/dashboard-slice';
 import { useToast } from '@/components/ui/use-toast';
+import { savePaymentMethod } from '../slice/dashboard-thunks';
 
 const FormSchema = z.object({
   name: z.string({ required_error: 'Name should be informed.' }).min(1, { message: 'Name should be informed.' }),

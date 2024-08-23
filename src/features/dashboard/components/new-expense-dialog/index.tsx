@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/dialog';
 import { Plus } from 'lucide-react';
 import ExpenseForm from './expense-form';
-import { fetchCategories, fetchPaymentMethods } from '../../slice/dashboard-slice';
 import { useAppDispatch } from '@/app/redux/store';
+import { fetchCategories, fetchPaymentMethods } from '../../slice/dashboard-thunks';
 
 export function NewExpenseDialog() {
   const dispatch = useAppDispatch();
