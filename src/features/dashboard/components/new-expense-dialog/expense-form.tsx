@@ -1,6 +1,5 @@
-import { useAppDispatch, useAppSelector } from '@/app/redux/store';
+import { useAppSelector } from '@/app/redux/store';
 import { DatePickerForm } from '@/components/input/date-picker';
-import { InputFormField } from '@/components/input/input-form-field';
 import SelectFormField from '@/components/input/select-form-field';
 import { Form } from '@/components/ui/form.tsx';
 import { SelectItem } from '@/components/ui/select';
@@ -12,6 +11,8 @@ import { Loader2 } from 'lucide-react';
 import useNewExpenseForm from '../../hooks/useNewExpenseForm';
 import { useMemo } from 'react';
 import { getCategories, getPaymentMethods, getExpenses } from '../../slice/dashboard-selectors';
+import { NumberFormInput } from '@/components/form-input/number-form-input';
+import { TextFormInput } from '@/components/form-input/text-form-input';
 
 function PaymentMethodSelectFormField({ paymentMethod }: { paymentMethod: PaymentMethod }) {
   return (
@@ -73,8 +74,8 @@ export default function ExpenseForm({ onSubmit }: TProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleOnSubmit)}>
         <div className="grid gap-4 py-4 px-1">
-          <InputFormField form={form} name="amount" label="Amount" type="number" />
-          <InputFormField form={form} name="description" label="Description" type="text" />
+          <NumberFormInput form={form} name="amount" label="Amount" />
+          <TextFormInput form={form} name="description" label="Description" />
           <DatePickerForm form={form} name="date" label="Date" />
           <SelectFormField form={form} name="installments" label="Installments" type="number">
             {installments.map((installment) => (

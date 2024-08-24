@@ -1,11 +1,11 @@
 import { Form } from '@/components/ui/form.tsx';
 import useNewPaymentMethodForm from '../../hooks/useNewPaymentMethodForm';
-import { InputFormField } from '@/components/input/input-form-field';
 import SelectFormField from '@/components/input/select-form-field';
 import { SelectItem } from '@/components/ui/select';
 import { DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { PaymentType } from '@/types/expense-types';
+import { TextFormInput } from '@/components/form-input/text-form-input';
 
 const paymentsTypes: { title: string; paymentType: PaymentType }[] = [
   { title: 'Credit Card', paymentType: 'CREDIT_CARD' },
@@ -27,7 +27,7 @@ export default function NewPaymentMethodForm({ closeDialog }: TProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4 px-1">
-            <InputFormField form={form} name="name" label="Name" type="text" />
+            <TextFormInput form={form} name="name" label="Name" />
             <SelectFormField form={form} name="paymentType" label="Payment type" type="text">
               {paymentsTypes.map((paymentType) => (
                 <SelectItem key={paymentType.paymentType} value={String(paymentType.paymentType)}>
