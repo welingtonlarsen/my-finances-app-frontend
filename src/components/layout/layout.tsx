@@ -1,26 +1,15 @@
-import {
-  Home,
-  Menu,
-  CircleDollarSign,
-} from 'lucide-react';
+import { Home, Menu, CircleDollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet.tsx';
 import { Outlet } from 'react-router-dom';
-import { UserMenu } from '../../components/user-menu';
-import { unauthenticate } from '../auth/slice/auth-slice';
-import { useAppDispatch } from '@/app/redux/store';
+import { UserMenu } from './user-menu';
+import UpgradeCard from './upgrade-card';
 
-type TLayout = {
-  title?: string;
+type TProps = {
+  onLogout: () => void;
 };
-export function Layout({ title }: TLayout) {
 
-  const dispatch = useAppDispatch()
-
-  const onLogout = () => {
-    dispatch(unauthenticate())
-  }
-
+export function Layout({ onLogout }: TProps) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       {/* Side nav for desktop */}
@@ -36,9 +25,12 @@ export function Layout({ title }: TLayout) {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <button className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
                 <Home className="h-4 w-4" />
-                Gastos variáveis
+                Variable expenses
               </button>
             </nav>
+          </div>
+          <div className="m-4">
+            <UpgradeCard />
           </div>
         </div>
       </div>
@@ -62,16 +54,15 @@ export function Layout({ title }: TLayout) {
                 </button>
                 <button className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground">
                   <Home className="h-5 w-5" />
-                  Gastos variáveis
+                  Variable expenses
                 </button>
               </nav>
             </SheetContent>
           </Sheet>
 
-          <div className='ml-auto'>
-            <UserMenu onLogout={onLogout}/>
+          <div className="ml-auto">
+            <UserMenu onLogout={onLogout} />
           </div>
-          
         </header>
 
         {/* Content */}

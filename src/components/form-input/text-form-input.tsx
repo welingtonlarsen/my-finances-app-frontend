@@ -1,7 +1,6 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { HTMLInputTypeAttribute } from 'react';
 
 export interface TInputForm<Type extends FieldValues> {
   form: UseFormReturn<Type, any, undefined>;

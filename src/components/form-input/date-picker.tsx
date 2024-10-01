@@ -1,10 +1,6 @@
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { HTMLInputTypeAttribute, useCallback, useMemo, ChangeEvent } from 'react';
-
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { z } from 'zod';
-
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -23,14 +19,14 @@ export function DatePickerForm<T extends FieldValues>({ form, name, label }: TIn
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem>
           <FormLabel>{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
                   variant={'outline'}
-                  className={cn('sm:w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                  className={cn('sm:w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                 >
                   {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
