@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { getTodayZeroHours } from '@/lib/date-utils';
 
 export interface TInputForm<Type extends FieldValues> {
   form: UseFormReturn<Type, any, undefined>;
@@ -14,6 +15,16 @@ export interface TInputForm<Type extends FieldValues> {
 }
 
 export function DatePickerForm<T extends FieldValues>({ form, name, label }: TInputForm<T>) {
+  const onSelect = (value, field) => {
+    /*
+     * When the date picker is opened, the default date is set to the current date.
+     * However, if today's date is clicked again, the value becomes undefined.
+     * So, in cases where the value is undefined, we set it to today’s date.
+     */
+    const sanitazedValue = value ?? getTodayZeroHours();
+    field.onChange(sanitazedValue);
+  };
+
   return (
     <FormField
       control={form.control}
@@ -37,8 +48,8 @@ export function DatePickerForm<T extends FieldValues>({ form, name, label }: TIn
               <Calendar
                 mode="single"
                 selected={field.value}
-                onSelect={field.onChange}
-                disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                onSelect={(value) => onSelect(value, field)}
+                disabled={false}
                 initialFocus
               />
             </PopoverContent>
