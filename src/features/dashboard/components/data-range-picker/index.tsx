@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
-import { DateRangePicker } from '@/components/raw/date-range-picker';
+import { DateRangePicker } from '@/components/date-range-picker/date-range-picker';
 import { setDateFilter } from '../../slice/dashboard-slice';
 import { createDateFromISOString, toISOString, toISOStringEndOfDay } from '@/lib/date-utils';
 import { getDashboardFilters } from '../../slice/dashboard-selectors';
