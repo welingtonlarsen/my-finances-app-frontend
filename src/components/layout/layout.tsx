@@ -1,4 +1,4 @@
-import { Home, Menu, CircleDollarSign } from 'lucide-react';
+import { Home, Menu, CircleDollarSign, Receipt, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet.tsx';
 import { Outlet } from 'react-router-dom';
@@ -22,13 +22,13 @@ export function Layout({ onLogout }: TProps) {
             </button>
           </div>
           <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+            <nav className="grid items-start px-2 text-sm font-medium lg:px-4 space-y-2">
               <button className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
-                <Home className="h-4 w-4" />
+                <CreditCard className="h-4 w-4" />
                 Expenses
               </button>
-              <button className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
-                <Home className="h-4 w-4" />
+              <button className="flex items-center gap-3 rounded-lg px-3 py-2 text-primary transition-all hover:text-primary hover:bg-muted">
+                <Receipt className="h-4 w-4" />
                 Bills
               </button>
             </nav>
