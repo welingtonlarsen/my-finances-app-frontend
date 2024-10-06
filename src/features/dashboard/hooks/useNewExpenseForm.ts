@@ -9,9 +9,13 @@ import { saveExpense } from '../slice/dashboard-thunks';
 
 const FormSchema = z.object({
   amount: z
-    .number({ required_error: 'Amount should be filled.' })
-    .multipleOf(0.01)
-    .min(0.01, { message: 'Amount should be greater than 0.' }),
+    .union([
+      z.number({ required_error: 'Amount should be filled.' }),
+      z.string({ required_error: 'Amount should be filled.' }),
+    ])
+    .refine((val) => val !== '' && Number(val) > 0, {
+      message: 'Amount should be greater than 0.',
+    }),
   description: z
     .string({ required_error: 'Description should be informed.' })
     .min(1, { message: 'Description should be informed.' }),
@@ -33,7 +37,7 @@ const FormSchema = z.object({
 });
 
 const defaultValues = {
-  amount: undefined,
+  amount: '',
   description: '',
   date: getTodayZeroHours(),
   installments: 1,

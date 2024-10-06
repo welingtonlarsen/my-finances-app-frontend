@@ -62,7 +62,7 @@ const dashboardSlice = createSlice({
       state.categories.status = 'loading';
     });
     builder.addCase(fetchCategories.fulfilled, (state, action) => {
-      state.categories.data = action.payload.data;
+      state.categories.data = action.payload;
       state.categories.status = 'succeeded';
     });
     builder.addCase(fetchCategories.rejected, (state, action) => {
@@ -74,7 +74,7 @@ const dashboardSlice = createSlice({
       state.paymentMethods.status = 'loading';
     });
     builder.addCase(fetchPaymentMethods.fulfilled, (state, action) => {
-      state.paymentMethods.data = action.payload.data;
+      state.paymentMethods.data = action.payload;
       state.paymentMethods.status = 'succeeded';
     });
     builder.addCase(fetchPaymentMethods.rejected, (state, action) => {
@@ -107,7 +107,7 @@ const dashboardSlice = createSlice({
       state.expenses.status = 'loading';
     });
     builder.addCase(fetchExpenses.fulfilled, (state, action) => {
-      state.expenses.data = action.payload.data;
+      state.expenses.data = action.payload;
       state.expenses.status = 'succeeded';
     });
     // deleteExpense
@@ -125,7 +125,7 @@ const dashboardSlice = createSlice({
       state.expensesSum.status = 'loading';
     });
     builder.addCase(fetchExpensesSum.fulfilled, (state, action) => {
-      state.expensesSum.data = action.payload.data;
+      state.expensesSum.data = action.payload;
       state.expensesSum.status = 'succeeded';
     });
   },

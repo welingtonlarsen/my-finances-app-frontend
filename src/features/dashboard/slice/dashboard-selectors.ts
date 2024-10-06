@@ -1,36 +1,44 @@
 import { RootState } from '@/app/redux/store';
+import { createSelector } from '@reduxjs/toolkit';
 
-export const getCategories = (state: RootState) => {
-  return {
-    categories: state.dashboard.categories.data,
-    isLoading: state.dashboard.categories.status === 'loading',
-  };
-};
+export const getCategories = createSelector(
+  (state: RootState) => state.dashboard.categories,
+  (categories) => {
+    return {
+      categories: categories.data,
+      isLoading: categories.status === 'loading',
+    };
+  },
+);
 
-export const getPaymentMethods = (state: RootState) => {
-  return {
-    paymentMethods: state.dashboard.paymentMethods.data,
-    isLoading: state.dashboard.paymentMethods.status === 'loading',
-    isDeleting: state.dashboard.paymentMethods.deleteStatus === 'loading',
-  };
-};
+export const getPaymentMethods = createSelector(
+  (state: RootState) => state.dashboard.paymentMethods,
+  (paymentMethods) => ({
+    paymentMethods: paymentMethods.data,
+    isLoading: paymentMethods.status === 'loading',
+    isDeleting: paymentMethods.deleteStatus === 'loading',
+  }),
+);
 
-export const getExpenses = (state: RootState) => {
-  return {
-    expenses: state.dashboard.expenses.data.expenses,
-    totalAmount: state.dashboard.expenses.data.totalAmount,
-    isLoading: state.dashboard.expenses.status === 'loading',
-    isDeleting: state.dashboard.expenses.deletingStatus === 'loading',
-  };
-};
+export const getExpenses = createSelector(
+  (state: RootState) => state.dashboard.expenses,
+  (expenses) => ({
+    expenses: expenses.data.expenses,
+    totalAmount: expenses.data.totalAmount,
+    isLoading: expenses.status === 'loading',
+    isDeleting: expenses.deletingStatus === 'loading',
+  }),
+);
 
-export const getExpensesSum = (state: RootState) => {
-  return {
-    expensesSum: state.dashboard.expensesSum.data,
-    isLoading: state.dashboard.expensesSum.status === 'loading',
-  };
-};
+export const getExpensesSum = createSelector(
+  (state: RootState) => state.dashboard.expensesSum,
+  (expensesSum) => ({
+    expensesSum: expensesSum.data,
+    isLoading: expensesSum.status === 'loading',
+  }),
+);
 
-export const getDashboardFilters = (state: RootState) => {
-  return state.dashboard.filters;
-};
+export const getDashboardFilters = createSelector(
+  (state: RootState) => state.dashboard,
+  (dashboard) => dashboard.filters,
+);

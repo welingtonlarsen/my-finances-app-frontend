@@ -6,12 +6,12 @@ import { initialPagination } from '../constants/constants';
 
 export const fetchCategories = createAsyncThunk('dashboard/fetchCategories', async () => {
   const response = await AxiosInstance.Authenticated.get<Category[]>('/category');
-  return response;
+  return response.data;
 });
 
 export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMethods', async () => {
   const response = await AxiosInstance.Authenticated.get<PaymentMethod[]>('/paymentmethod');
-  return response;
+  return response.data;
 });
 
 export const deletePaymentMethod = createAsyncThunk(
@@ -37,7 +37,7 @@ export const savePaymentMethod = createAsyncThunk(
     dispatch(fetchPaymentMethods());
     const state = getState() as RootState;
     dispatch(fetchExpensesSum(state.dashboard.filters.date));
-    return response;
+    return response.data;
   },
 );
 
@@ -50,7 +50,7 @@ export const fetchExpenses = createAsyncThunk(
       from,
       to,
     });
-    return response;
+    return response.data;
   },
 );
 
@@ -58,7 +58,7 @@ export const fetchExpensesSum = createAsyncThunk(
   'dashboard/fetchExpensesSum',
   async ({ from, to }: { from: string; to: string }) => {
     const response = await AxiosInstance.Authenticated.get<ExpenseSum[]>('/expenses/sum', { from, to });
-    return response;
+    return response.data;
   },
 );
 
@@ -69,7 +69,7 @@ export const saveExpense = createAsyncThunk(
     const state = getState() as RootState;
     await dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date })).unwrap();
     dispatch(fetchExpensesSum(state.dashboard.filters.date));
-    return response;
+    return response.data;
   },
 );
 
