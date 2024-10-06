@@ -11,9 +11,9 @@ type TProps = {
 
 export function Layout({ onLogout }: TProps) {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      {/* Side nav for desktop */}
-      <div className="hidden border-r bg-muted/40 md:block">
+    <div className="flex min-h-screen w-full">
+      {/* Fixed sidebar for desktop */}
+      <div className="fixed inset-y-0 left-0 z-10 hidden w-[220px] flex-col border-r bg-background lg:w-[280px] md:flex">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <button className="flex items-center gap-2 font-semibold">
@@ -39,9 +39,9 @@ export function Layout({ onLogout }: TProps) {
         </div>
       </div>
 
-      {/* Header */}
-      <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+      {/* Main content area */}
+      <div className="flex flex-1 flex-col md:pl-[220px] lg:pl-[280px]">
+        <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="shrink-0 md:hidden">
