@@ -1,15 +1,38 @@
 import { Home, Menu, CircleDollarSign, Receipt, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet.tsx';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { UserMenu } from './user-menu';
 import UpgradeCard from './upgrade-card';
+import { useState } from 'react';
 
 type TProps = {
   onLogout: () => void;
 };
 
 export function Layout({ onLogout }: TProps) {
+  const navigate = useNavigate();
+
+  const [activeNavItemIndex, setActiveNavItemIndex] = useState(0);
+
+  const navItems = [
+    {
+      icon: <CreditCard className="h-4 w-4" />,
+      title: 'Expenses',
+      path: '/expenses',
+    },
+    {
+      icon: <Receipt className="h-4 w-4" />,
+      title: 'Bills',
+      path: '/bills',
+    },
+  ];
+
+  const onSelectItem = (selectedIndex: number, path: string) => {
+    setActiveNavItemIndex(selectedIndex);
+    navigate(path);
+  };
+
   return (
     <div className="flex min-h-screen w-full">
       {/* Fixed sidebar for desktop */}
@@ -23,14 +46,16 @@ export function Layout({ onLogout }: TProps) {
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4 space-y-2">
-              <button className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary">
-                <CreditCard className="h-4 w-4" />
-                Expenses
-              </button>
-              <button className="flex items-center gap-3 rounded-lg px-3 py-2 text-primary transition-all hover:text-primary hover:bg-muted">
-                <Receipt className="h-4 w-4" />
-                Bills
-              </button>
+              {navItems.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => onSelectItem(index, item.path)}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-primary transition-all hover:text-primary ${index === activeNavItemIndex && 'bg-muted'}`}
+                >
+                  {item.icon}
+                  {item.title}
+                </button>
+              ))}
             </nav>
           </div>
           <div className="m-4">

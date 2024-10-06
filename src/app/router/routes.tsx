@@ -5,6 +5,7 @@ import globalRouter from '@/app/router/global-router.ts';
 import { useAppDispatch } from '../redux/store';
 import { unauthenticate } from '@/features/auth/slice/auth-slice';
 import { Layout } from '@/components/layout/layout';
+import BillsPage from '@/pages/bills-page';
 
 const RouteWall = ({ privateRoute }: { privateRoute?: boolean }) => {
   const dispatch = useAppDispatch();
@@ -35,8 +36,16 @@ export const router = createBrowserRouter([
     element: <RouteWall privateRoute />,
     children: [
       {
-        path: '/',
+        index: true,
+        element: <Navigate to="/expenses" replace />,
+      },
+      {
+        path: '/expenses',
         element: <DashboardPage />,
+      },
+      {
+        path: '/bills',
+        element: <BillsPage />,
       },
     ],
   },
