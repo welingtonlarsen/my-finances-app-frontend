@@ -43,12 +43,25 @@ export const savePaymentMethod = createAsyncThunk(
 
 export const fetchExpenses = createAsyncThunk(
   'dashboard/fetchExpenses',
-  async ({ page, size, from, to }: { page: number; size: number; from: string; to: string }) => {
+  async ({
+    page,
+    size,
+    from,
+    to,
+    paymentMethodIds,
+  }: {
+    page: number;
+    size: number;
+    from: string;
+    to: string;
+    paymentMethodIds?: number[];
+  }) => {
     const response = await AxiosInstance.Authenticated.get<{ expenses: Expense[]; totalAmount: number }>('/expense', {
       page,
       size,
       from,
       to,
+      ...(paymentMethodIds && { paymentMethodIdsIn: paymentMethodIds }),
     });
     return response.data;
   },
