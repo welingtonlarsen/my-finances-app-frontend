@@ -26,6 +26,11 @@ export function Layout({ onLogout }: TProps) {
       title: 'Bills',
       path: '/bills',
     },
+    {
+      icon: <Receipt className="h-4 w-4" />,
+      title: 'Independência',
+      path: '/independencia-financeira',
+    },
   ];
 
   const onSelectItem = (selectedIndex: number, path: string) => {

@@ -6,6 +6,7 @@ import { useAppDispatch } from '../redux/store';
 import { unauthenticate } from '@/features/auth/slice/auth-slice';
 import { Layout } from '@/components/layout/layout';
 import BillsPage from '@/pages/bills-page';
+import FinancialIndependence from '@/pages/goals-page';
 
 const RouteWall = ({ privateRoute }: { privateRoute?: boolean }) => {
   const dispatch = useAppDispatch();
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: '/bills',
         element: <BillsPage />,
+      },
+      {
+        path: 'independencia-financeira',
+        element: <FinancialIndependence />,
       },
     ],
   },
