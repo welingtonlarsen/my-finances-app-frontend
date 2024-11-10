@@ -10,7 +10,7 @@ const icons = {
   info: <Info className="h-5 w-5" />,
 };
 
-const icon = icons['success'];
+const icon = icons['info'];
 
 const styles = {
   success: 'border-green-200',

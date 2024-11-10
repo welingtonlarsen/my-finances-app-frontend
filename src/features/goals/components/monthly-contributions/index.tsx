@@ -4,7 +4,7 @@ import MonthlyContributionsSummary from './summary';
 
 export function MonthlyContributions() {
   return (
-    <div className="w-[50rem]">
+    <div className="max-w-[50rem]">
       <Card>
         <CardHeader>
           <CardTitle>Aportes mensais</CardTitle>
