@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button.tsx';
-import { NewExpenseDialog } from '@/features/dashboard/components/new-expense-dialog';
 import { useAppDispatch, useAppSelector } from '@/app/redux/store';
 import { useEffect, useState } from 'react';
 import { formatMoney } from '@/lib/money-utils';
@@ -8,23 +7,25 @@ import { Loader2 } from 'lucide-react';
 import { initialPagination, pageSize } from '../../constants/constants';
 import ExpenseItem from './expense-item';
 import { fetchExpenses, deleteExpense } from '../../slice/dashboard-thunks';
-import { getExpenses, getDashboardFilters, getPaymentMethods } from '../../slice/dashboard-selectors';
+import { getExpenses, getDashboardFilters } from '../../slice/dashboard-selectors';
 import { canFetchMore } from '@/lib/pagination-utils';
-import PaymentMethodFilter from '../payment-method-filter';
 
 export default function ExpensesList() {
   const [pagination, setPagination] = useState(initialPagination);
-  const [filteredPaymentMethodIds, setFilteredPaymentMethodIds] = useState(null);
-
   const dispatch = useAppDispatch();
 
   const { expenses, totalAmount, isLoading: isExpensesLoading } = useAppSelector(getExpenses);
   const dashboardFilters = useAppSelector(getDashboardFilters);
-  const paymentMethods = useAppSelector(getPaymentMethods);
 
   useEffect(() => {
-    dispatch(fetchExpenses({ ...pagination, from: dashboardFilters.date.from, to: dashboardFilters.date.to }));
-  }, [dashboardFilters, dispatch]);
+    dispatch(
+      fetchExpenses({
+        ...pagination,
+        from: dashboardFilters.date.from,
+        to: dashboardFilters.date.to,
+      }),
+    );
+  }, [dashboardFilters, dispatch, pagination]);
 
   const fetchMoreExpenses = () => {
     const newPagination = { ...pagination, size: pagination.size + pageSize };
@@ -33,7 +34,6 @@ export default function ExpensesList() {
         ...newPagination,
         from: dashboardFilters.date.from,
         to: dashboardFilters.date.to,
-        paymentMethodIds: filteredPaymentMethodIds,
       }),
     );
     setPagination(newPagination);
@@ -44,32 +44,12 @@ export default function ExpensesList() {
     setPagination(initialPagination);
   };
 
-  const handleSelectFilter = (ids: number[]) => {
-    setPagination(initialPagination);
-    setFilteredPaymentMethodIds(ids.length ? ids : null);
-    dispatch(
-      fetchExpenses({
-        ...initialPagination,
-        from: dashboardFilters.date.from,
-        to: dashboardFilters.date.to,
-        paymentMethodIds: ids,
-      }),
-    );
-  };
-
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader>
         <div className="grid gap-2">
           <CardTitle>Statement</CardTitle>
           <CardDescription>Total: {formatMoney(totalAmount || 0)}</CardDescription>
-        </div>
-        <div className="flex flex-row items-center gap-2">
-          <PaymentMethodFilter
-            paymentMethods={paymentMethods.paymentMethods}
-            onSelectPaymentMethods={handleSelectFilter}
-          />
-          <NewExpenseDialog />
         </div>
       </CardHeader>
 

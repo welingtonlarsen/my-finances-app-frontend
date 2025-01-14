@@ -9,22 +9,31 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Filter } from 'lucide-react';
-import { PaymentMethod } from '@/types/expense-types';
+import { useAppDispatch, useAppSelector } from '@/app/redux/store';
+import { getPaymentMethods, getDashboardFilters } from '@/features/dashboard/slice/dashboard-selectors';
+import { fetchExpenses } from '@/features/dashboard/slice/dashboard-thunks';
+import { initialPagination } from '@/features/dashboard/constants/constants';
 
-type TProps = {
-  paymentMethods: PaymentMethod[];
-  onSelectPaymentMethods: (ids: number[]) => void;
-};
-
-export default function PaymentMethodFilter({ paymentMethods, onSelectPaymentMethods }: TProps) {
+export default function PaymentMethodFilter() {
   const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
+  const { paymentMethods } = useAppSelector(getPaymentMethods);
+  const dashboardFilters = useAppSelector(getDashboardFilters);
+  const dispatch = useAppDispatch();
 
   const handleFilterChange = (filterId: number) => {
     const newSelectedFilters = selectedFilters.includes(filterId)
       ? selectedFilters.filter((id) => id !== filterId)
       : [...selectedFilters, filterId];
     setSelectedFilters(newSelectedFilters);
-    onSelectPaymentMethods(newSelectedFilters);
+
+    dispatch(
+      fetchExpenses({
+        ...initialPagination,
+        from: dashboardFilters.date.from,
+        to: dashboardFilters.date.to,
+        paymentMethodIds: newSelectedFilters.length ? newSelectedFilters : undefined,
+      }),
+    );
   };
 
   return (

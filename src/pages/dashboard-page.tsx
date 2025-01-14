@@ -1,6 +1,8 @@
 import ExpensesTotalCards from '@/features/dashboard/components/expenses-totals-cards';
 import ExpensesList from '@/features/dashboard/components/expenses-list';
 import ExpensesDateRangePicker from '@/features/dashboard/components/data-range-picker';
+import PaymentMethodFilter from '@/features/dashboard/components/payment-method-filter';
+import { NewExpenseDialog } from '@/features/dashboard/components/new-expense-dialog';
 
 export default function DashboardPage() {
   return (
@@ -13,7 +15,11 @@ export default function DashboardPage() {
         <div className="col-span-2 gap-4 xl:gap-8">
           <ExpensesTotalCards />
         </div>
-        <div className="col-span-2 xl:col-span-1 xl:mt-3">
+        <div className="col-span-2 xl:col-span-1">
+          <div className="flex items-center mb-4 mt-6 space-x-2">
+            <PaymentMethodFilter />
+            <NewExpenseDialog />
+          </div>
           <ExpensesList />
         </div>
       </div>
