@@ -15,7 +15,7 @@ export default function DashboardPage() {
         <div className="col-span-2 gap-4 xl:gap-8">
           <ExpensesTotalCards />
         </div>
-        <div className="col-span-2 xl:col-span-1">
+        <div className="col-span-2">
           <div className="flex items-center mb-4 mt-6 space-x-2">
             <PaymentMethodFilter />
             <NewExpenseDialog />

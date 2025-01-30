@@ -14,7 +14,7 @@ export default function ExpensesList() {
   const [pagination, setPagination] = useState(initialPagination);
   const dispatch = useAppDispatch();
 
-  const { expenses, totalAmount, isLoading: isExpensesLoading } = useAppSelector(getExpenses);
+  const { expenses, remainingInstallments, totalAmount, isLoading: isExpensesLoading } = useAppSelector(getExpenses);
   const dashboardFilters = useAppSelector(getDashboardFilters);
 
   useEffect(() => {
@@ -45,30 +45,64 @@ export default function ExpensesList() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="grid gap-2">
-          <CardTitle>Statement</CardTitle>
-          <CardDescription>Total: {formatMoney(totalAmount || 0)}</CardDescription>
-        </div>
-      </CardHeader>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[1200px]">
+      <div>
+        <Card>
+          <CardHeader>
+            <div className="grid gap-2">
+              <CardTitle>Statement</CardTitle>
+              <CardDescription>Total: {formatMoney(totalAmount || 0)}</CardDescription>
+            </div>
+          </CardHeader>
 
-      <CardContent className="grid gap-8">
-        {!!expenses.length &&
-          expenses.map((expense) => (
-            <ExpenseItem key={expense.id} expense={expense} handleDeleteExpense={handleDeleteExpense} />
-          ))}
-        {!expenses.length && <p className="text-muted-foreground">No expenses found for selected date range.</p>}
-      </CardContent>
+          <CardContent className="grid gap-8">
+            {!!expenses.length &&
+              expenses.map((expense) => (
+                <ExpenseItem key={expense.id} expense={expense} handleDeleteExpense={handleDeleteExpense} />
+              ))}
+            {!expenses.length && <p className="text-muted-foreground">No expenses found for selected date range.</p>}
+          </CardContent>
 
-      <CardFooter className="flex items-center justify-center py-2">
-        {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {!isExpensesLoading && canFetchMore(expenses.length, pagination.page, pagination.size) && (
-          <Button variant="link" onClick={fetchMoreExpenses}>
-            See more
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
+          <CardFooter className="flex items-center justify-center py-2">
+            {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {!isExpensesLoading && canFetchMore(expenses.length, pagination.page, pagination.size) && (
+              <Button variant="link" onClick={fetchMoreExpenses}>
+                See more
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
+      </div>
+
+      <div>
+        <Card>
+          <CardHeader>
+            <div className="grid gap-2">
+              <CardTitle>Remaining Installments</CardTitle>
+              <CardDescription>Future payments</CardDescription>
+            </div>
+          </CardHeader>
+
+          <CardContent className="grid gap-8">
+            {!!remainingInstallments.length &&
+              remainingInstallments.map((expense) => (
+                <ExpenseItem key={expense.id} expense={expense} handleDeleteExpense={handleDeleteExpense} />
+              ))}
+            {!remainingInstallments.length && (
+              <p className="text-muted-foreground">No remaining installments found for selected date range.</p>
+            )}
+          </CardContent>
+
+          <CardFooter className="flex items-center justify-center py-2">
+            {isExpensesLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {!isExpensesLoading && canFetchMore(remainingInstallments.length, pagination.page, pagination.size) && (
+              <Button variant="link" onClick={fetchMoreExpenses}>
+                See more
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 }

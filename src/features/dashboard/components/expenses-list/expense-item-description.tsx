@@ -3,12 +3,20 @@ import { truncateString } from '@/lib/string-utils';
 import { isMobile } from 'react-device-detect';
 
 type TProps = {
+  totalInstallments: number;
+  currentInstallment: number;
   description: string;
   date: string;
   paymentMethodName: string;
 };
 
-export default function ExpenseItemDescription({ description, date, paymentMethodName }: TProps) {
+export default function ExpenseItemDescription({
+  description,
+  date,
+  paymentMethodName,
+  totalInstallments,
+  currentInstallment,
+}: TProps) {
   return (
     <div>
       <div className="flex items-center">
@@ -16,7 +24,9 @@ export default function ExpenseItemDescription({ description, date, paymentMetho
         &nbsp;
         <p className="text-xs text-muted-foreground">({formatDateToYearMonthDay(date)})</p>
       </div>
-      <p className="text-sm text-muted-foreground">{paymentMethodName}</p>
+      <p className="text-sm text-muted-foreground">
+        {currentInstallment}/{totalInstallments} - {paymentMethodName}
+      </p>
     </div>
   );
 }

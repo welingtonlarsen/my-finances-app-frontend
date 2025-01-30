@@ -37,6 +37,8 @@ export default function ExpenseItem({ expense, handleDeleteExpense }: TProps) {
         description={expense.description}
         date={expense.date}
         paymentMethodName={expense.paymentMethod?.name}
+        totalInstallments={expense.installments}
+        currentInstallment={expense.currentInstallment}
       />
 
       <div className="ml-auto font-medium">{formatMoney(expense.amount)}</div>
