@@ -28,7 +28,8 @@ const initialState: DashboardState = {
   },
   expenses: {
     data: {
-      expenses: [],
+      firstInstallment: [],
+      remainingInstallments: [],
       totalAmount: null,
     },
     status: 'idle',

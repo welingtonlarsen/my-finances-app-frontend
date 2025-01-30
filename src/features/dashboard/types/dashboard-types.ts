@@ -16,7 +16,8 @@ export type DashboardState = {
   };
   expenses: {
     data: {
-      expenses: Expense[];
+      firstInstallment: Expense[];
+      remainingInstallments: Expense[];
       totalAmount: number | null;
     };
     status: StateStatus;

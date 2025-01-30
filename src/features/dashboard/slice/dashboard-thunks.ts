@@ -1,6 +1,6 @@
 import { AxiosInstance } from '@/app/axios/axios-instance';
 import { RootState } from '@/app/redux/store';
-import { Category, PaymentMethod, Expense, ExpenseSum } from '@/types/expense-types';
+import { Category, PaymentMethod, Expense, ExpenseSum, ExpenseResponse } from '@/types/expense-types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { initialPagination } from '../constants/constants';
 
@@ -56,14 +56,18 @@ export const fetchExpenses = createAsyncThunk(
     to: string;
     paymentMethodIds?: number[];
   }) => {
-    const response = await AxiosInstance.Authenticated.get<{ expenses: Expense[]; totalAmount: number }>('/expense', {
+    const response = await AxiosInstance.Authenticated.get<ExpenseResponse>('/expense', {
       page,
       size,
       from,
       to,
       ...(paymentMethodIds && { paymentMethodIdsIn: paymentMethodIds }),
     });
-    return response.data;
+    return {
+      firstInstallment: response.data.expenses.firstInstallment,
+      remainingInstallments: response.data.expenses.remainingInstallments,
+      totalAmount: response.data.totalAmount,
+    };
   },
 );
 

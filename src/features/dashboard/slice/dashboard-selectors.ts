@@ -23,7 +23,8 @@ export const getPaymentMethods = createSelector(
 export const getExpenses = createSelector(
   (state: RootState) => state.dashboard.expenses,
   (expenses) => ({
-    expenses: expenses.data.expenses,
+    expenses: expenses.data.firstInstallment,
+    remainingInstallments: expenses.data.remainingInstallments,
     totalAmount: expenses.data.totalAmount,
     isLoading: expenses.status === 'loading',
     isDeleting: expenses.deletingStatus === 'loading',

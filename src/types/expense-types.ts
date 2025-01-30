@@ -24,6 +24,14 @@ export type Expense = {
   paymentMethod?: PaymentMethod;
 };
 
+export type ExpenseResponse = {
+  expenses: {
+    firstInstallment: Expense[];
+    remainingInstallments: Expense[];
+  };
+  totalAmount: number;
+};
+
 export type ExpenseSum = {
   sum: number;
   paymentMethodName: string;
