@@ -1,4 +1,4 @@
-import DashboardPage from '@/pages/dashboard-page';
+import ExpensesPage from '@/pages/expenses';
 import SignInPage from '@/pages/signin-page.tsx';
 import { createBrowserRouter, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import globalRouter from '@/app/router/global-router.ts';
@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/expenses',
-        element: <DashboardPage />,
+        element: <ExpensesPage />,
       },
       {
         path: '/bills',

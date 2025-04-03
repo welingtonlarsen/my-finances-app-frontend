@@ -4,7 +4,7 @@ import ExpensesDateRangePicker from '@/features/dashboard/components/data-range-
 import PaymentMethodFilter from '@/features/dashboard/components/payment-method-filter';
 import { NewExpenseDialog } from '@/features/dashboard/components/new-expense-dialog';
 
-export default function DashboardPage() {
+export default function ExpensesPage() {
   return (
     <>
       <div className="flex justify-between">

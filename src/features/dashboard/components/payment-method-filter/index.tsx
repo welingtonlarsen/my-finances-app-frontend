@@ -47,7 +47,7 @@ export default function PaymentMethodFilter() {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Payment method</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {paymentMethods.map((option) => (
+        {(paymentMethods || []).map((option) => (
           <DropdownMenuCheckboxItem
             key={option.id}
             checked={selectedFilters.includes(option.id)}
