@@ -7,6 +7,9 @@ export const getCategories = createSelector(
     return {
       categories: categories.data,
       isLoading: categories.status === 'loading',
+      isSaving: categories.saveStatus === 'loading',
+      error: categories.error,
+      saveStatus: categories.saveStatus,
     };
   },
 );

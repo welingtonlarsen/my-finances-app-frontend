@@ -1,4 +1,3 @@
-import { RootState } from '@/app/redux/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getFirstDayOfCurrentMonth, getLastDayOfCurrentMonth } from '@/lib/date-utils';
 import {
@@ -10,6 +9,7 @@ import {
   fetchExpenses,
   deleteExpense,
   fetchExpensesSum,
+  saveCategory,
 } from './dashboard-thunks';
 import { DashboardState } from '../types/dashboard-types';
 
@@ -17,6 +17,7 @@ const initialState: DashboardState = {
   categories: {
     data: [],
     status: 'idle',
+    saveStatus: 'idle',
     error: null,
   },
   paymentMethods: {
@@ -69,6 +70,17 @@ const dashboardSlice = createSlice({
     builder.addCase(fetchCategories.rejected, (state, action) => {
       state.categories.status = 'failed';
       state.categories.error = action.error.message || 'Something went wrong';
+    });
+    // saveCategory
+    builder.addCase(saveCategory.pending, (state) => {
+      state.categories.saveStatus = 'loading';
+    });
+    builder.addCase(saveCategory.fulfilled, (state) => {
+      state.categories.saveStatus = 'succeeded';
+    });
+    builder.addCase(saveCategory.rejected, (state, action) => {
+      state.categories.error = action.error.message;
+      state.categories.saveStatus = 'failed';
     });
     // fetchPaymentMethods
     builder.addCase(fetchPaymentMethods.pending, (state) => {

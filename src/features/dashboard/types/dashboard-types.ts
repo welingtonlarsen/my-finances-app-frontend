@@ -5,6 +5,7 @@ export type DashboardState = {
   categories: {
     data: Category[];
     status: StateStatus;
+    saveStatus: StateStatus;
     error: string | null;
   };
   paymentMethods: {

@@ -9,6 +9,21 @@ export const fetchCategories = createAsyncThunk('dashboard/fetchCategories', asy
   return response.data;
 });
 
+export const saveCategory = createAsyncThunk('dashboard/saveCategory', async (category: Category, { dispatch }) => {
+  const response = await AxiosInstance.Authenticated.post<Category, Category>('/category', category);
+
+  if (response.status >= 200 && response.status < 300) {
+    dispatch(fetchCategories());
+    return response.data;
+  }
+
+  if (response.status === 409) {
+    throw new Error('Category already exists.');
+  }
+
+  throw new Error('Some error happen, please report it to support team.');
+});
+
 export const fetchPaymentMethods = createAsyncThunk('dashboard/fetchPaymentMethods', async () => {
   const response = await AxiosInstance.Authenticated.get<PaymentMethod[]>('/paymentmethod');
   return response.data;
