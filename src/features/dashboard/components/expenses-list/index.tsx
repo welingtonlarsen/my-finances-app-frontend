@@ -7,8 +7,9 @@ import { Loader2 } from 'lucide-react';
 import { initialPagination, pageSize } from '../../constants/constants';
 import ExpenseItem from './expense-item';
 import { fetchExpenses, deleteExpense } from '../../slice/dashboard-thunks';
-import { getExpenses, getDashboardFilters } from '../../slice/dashboard-selectors';
+import { getExpenses, getDashboardFilters, getCategories } from '../../slice/dashboard-selectors';
 import { canFetchMore } from '@/lib/pagination-utils';
+import getCategoryName from './utils/getCategoryName';
 
 export default function ExpensesList() {
   const [pagination, setPagination] = useState(initialPagination);
@@ -16,6 +17,7 @@ export default function ExpensesList() {
 
   const { expenses, remainingInstallments, totalAmount, isLoading: isExpensesLoading } = useAppSelector(getExpenses);
   const dashboardFilters = useAppSelector(getDashboardFilters);
+  const categories = useAppSelector(getCategories);
 
   useEffect(() => {
     dispatch(
@@ -58,7 +60,12 @@ export default function ExpensesList() {
           <CardContent className="grid gap-8">
             {!!expenses.length &&
               expenses.map((expense) => (
-                <ExpenseItem key={expense.id} expense={expense} handleDeleteExpense={handleDeleteExpense} />
+                <ExpenseItem
+                  key={expense.id}
+                  expense={expense}
+                  category={getCategoryName(categories.isLoading, categories.categories, expense.categoryId)}
+                  handleDeleteExpense={handleDeleteExpense}
+                />
               ))}
             {!expenses.length && <p className="text-muted-foreground">No expenses found for selected date range.</p>}
           </CardContent>
@@ -86,7 +93,12 @@ export default function ExpensesList() {
           <CardContent className="grid gap-8">
             {!!remainingInstallments.length &&
               remainingInstallments.map((expense) => (
-                <ExpenseItem key={expense.id} expense={expense} handleDeleteExpense={handleDeleteExpense} />
+                <ExpenseItem
+                  key={expense.id}
+                  expense={expense}
+                  category={getCategoryName(categories.isLoading, categories.categories, expense.categoryId)}
+                  handleDeleteExpense={handleDeleteExpense}
+                />
               ))}
             {!remainingInstallments.length && (
               <p className="text-muted-foreground">No remaining installments found for selected date range.</p>
