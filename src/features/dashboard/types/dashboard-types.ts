@@ -23,6 +23,7 @@ export type DashboardState = {
     };
     status: StateStatus;
     deletingStatus: StateStatus;
+    updatingStatus: StateStatus;
     error: string | null;
   };
   expensesSum: {

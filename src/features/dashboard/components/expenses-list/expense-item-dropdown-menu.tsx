@@ -9,10 +9,11 @@ import { Loader2, MoreVertical } from 'lucide-react';
 
 type TProps = {
   handleDeleteExpense: () => void;
+  handleEditExpense: () => void;
   isDeleting: boolean;
 };
 
-export default function ExpenseItemDropdownMenu({ handleDeleteExpense, isDeleting }: TProps) {
+export default function ExpenseItemDropdownMenu({ handleDeleteExpense, isDeleting, handleEditExpense }: TProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,6 +23,7 @@ export default function ExpenseItemDropdownMenu({ handleDeleteExpense, isDeletin
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={handleEditExpense}>Edit</DropdownMenuItem>
         <DropdownMenuItem onClick={handleDeleteExpense}>Delete</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

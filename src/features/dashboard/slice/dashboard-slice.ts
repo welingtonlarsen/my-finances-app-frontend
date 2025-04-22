@@ -10,6 +10,7 @@ import {
   deleteExpense,
   fetchExpensesSum,
   saveCategory,
+  updateExpense,
 } from './dashboard-thunks';
 import { DashboardState } from '../types/dashboard-types';
 
@@ -35,6 +36,7 @@ const initialState: DashboardState = {
     },
     status: 'idle',
     deletingStatus: 'idle',
+    updatingStatus: 'idle',
     error: null,
   },
   expensesSum: {
@@ -114,6 +116,13 @@ const dashboardSlice = createSlice({
     });
     builder.addCase(saveExpense.fulfilled, (state) => {
       state.expenses.status = 'succeeded';
+    });
+    // updateExpense
+    builder.addCase(updateExpense.pending, (state) => {
+      state.expenses.updatingStatus = 'loading';
+    });
+    builder.addCase(updateExpense.fulfilled, (state) => {
+      state.expenses.updatingStatus = 'succeeded';
     });
     // fetchExpenses
     builder.addCase(fetchExpenses.pending, (state) => {

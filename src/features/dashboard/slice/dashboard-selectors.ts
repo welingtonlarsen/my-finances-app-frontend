@@ -30,6 +30,7 @@ export const getExpenses = createSelector(
     remainingInstallments: expenses.data.remainingInstallments,
     totalAmount: expenses.data.totalAmount,
     isLoading: expenses.status === 'loading',
+    isUpdating: expenses.updatingStatus === 'loading',
     isDeleting: expenses.deletingStatus === 'loading',
   }),
 );

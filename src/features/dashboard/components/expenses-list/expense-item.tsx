@@ -10,10 +10,11 @@ import ExpenseItemGeneralInfo from './expense-item-general-info';
 type TProps = {
   expense: Expense;
   handleDeleteExpense: (id: number) => void;
+  handleEditExpense: (expense: Expense) => void;
   category: string;
 };
 
-export default function ExpenseItem({ expense, handleDeleteExpense, category }: TProps) {
+export default function ExpenseItem({ expense, handleDeleteExpense, category, handleEditExpense }: TProps) {
   const { isDeleting } = useAppSelector(getExpenses);
 
   return (
@@ -34,7 +35,11 @@ export default function ExpenseItem({ expense, handleDeleteExpense, category }: 
 
       <div className="ml-auto font-medium">{formatMoney(expense.amount)}</div>
 
-      <ExpenseItemDropdownMenu isDeleting={isDeleting} handleDeleteExpense={() => handleDeleteExpense(expense.id)} />
+      <ExpenseItemDropdownMenu
+        isDeleting={isDeleting}
+        handleDeleteExpense={() => handleDeleteExpense(expense.id)}
+        handleEditExpense={() => handleEditExpense(expense)}
+      />
     </div>
   );
 }

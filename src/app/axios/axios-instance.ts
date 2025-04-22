@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import axios from 'axios';
 import globalRouter from '../router/global-router';
 import { deleteAuthToken, getAuthToken } from '@/lib/local-storage-utils';
@@ -39,6 +40,12 @@ export namespace AxiosInstance {
 
     export function deleteRequest<T>(path: string) {
       return axiosInstance.delete<T>(`${BASE_URL}${path}`, { headers: { Authorization: `Bearer ${getAuthToken()}` } });
+    }
+
+    export function patch<T, K>(path: string, resouceId: number | string, data: K) {
+      return axiosInstance.patch<T>(`${BASE_URL}${path}/${resouceId}`, data, {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      });
     }
   }
 }

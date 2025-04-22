@@ -6,6 +6,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useMemo, useRef } from 'react';
 import { getTodayZeroHours } from '@/lib/date-utils';
 import { saveExpense } from '../slice/dashboard-thunks';
+import { Expense } from '@/types/expense-types';
 
 const FormSchema = z.object({
   amount: z
@@ -46,11 +47,13 @@ const defaultValues = {
   categoryId: 1,
 };
 
+export type ExpenseFormSchema = z.infer<typeof FormSchema>;
+
 export default function useNewExpenseForm({
   closeDialog,
   loadedDefaultValues,
 }: {
-  closeDialog: () => void;
+  closeDialog: (expense: ExpenseFormSchema) => void;
   loadedDefaultValues?: Partial<z.infer<typeof FormSchema>>;
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -69,9 +72,9 @@ export default function useNewExpenseForm({
     }
   }, [loadedDefaultValues]);
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: ExpenseFormSchema) {
     await dispatch(saveExpense(data as any)).unwrap();
-    closeDialog();
+    closeDialog(data);
     form.reset({ ...defaultValues });
     toast({
       description: 'Expense saved successfully.',

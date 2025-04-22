@@ -105,6 +105,16 @@ export const saveExpense = createAsyncThunk(
   },
 );
 
+export const updateExpense = createAsyncThunk(
+  'dashboard/updateExpense',
+  async (expense: Partial<Expense>, { dispatch, getState }) => {
+    await AxiosInstance.Authenticated.patch<Expense, Partial<Expense>>('/expense', expense.id, expense);
+    const state = getState() as RootState;
+    await dispatch(fetchExpenses({ ...initialPagination, ...state.dashboard.filters.date })).unwrap();
+    dispatch(fetchExpensesSum(state.dashboard.filters.date));
+  },
+);
+
 export const deleteExpense = createAsyncThunk('dashboard/deleteExpense', async (id: number, { dispatch, getState }) => {
   await AxiosInstance.Authenticated.deleteRequest(`/expense/${id}`);
   const state = getState() as RootState;
