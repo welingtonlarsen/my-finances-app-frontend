@@ -114,6 +114,7 @@ export default function ExpensesList() {
                     expense={expense}
                     category={getCategoryName(categories.isLoading, categories.categories, expense.categoryId)}
                     handleDeleteExpense={handleDeleteExpense}
+                    handleEditExpense={(expense: Expense) => handleEditExpense(expense)}
                   />
                 ))}
               {!remainingInstallments.length && (
